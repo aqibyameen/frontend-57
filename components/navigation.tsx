@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, ShoppingCart, Heart, User, Menu, X } from "lucide-react"
+import { ShoppingCart, Heart, User, Menu, X, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { useCart, useCartActions } from "@/lib/cart-store"
@@ -14,7 +13,6 @@ const categories = ["Anime T-Shirts", "Gaming Tees", "Streetwear", "Minimalist",
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
   const { state } = useCart()
   const { toggleCart } = useCartActions()
 
@@ -24,83 +22,81 @@ export function Navigation() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">T</span>
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="flex h-14 sm:h-16 items-center justify-between gap-4 lg:gap-8">
+            {/* Logo - Always show logo with text on all devices */}
+            <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
+              <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-base sm:text-lg">T</span>
               </div>
-              <span className="font-bold text-xl text-foreground">TeeVibe</span>
+              <span className="font-bold text-lg sm:text-xl text-foreground">TeeVibe</span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/" className="text-foreground hover:text-primary transition-colors font-medium">
-                Home
-              </Link>
-              <Link href="/new-arrivals" className="text-foreground hover:text-primary transition-colors font-medium">
-                New Arrivals
-              </Link>
-              <Link href="/trending" className="text-foreground hover:text-primary transition-colors font-medium">
-                Trending
-              </Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-foreground hover:text-primary font-medium">
-                    Categories
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-48">
-                  {categories.map((category) => (
-                    <DropdownMenuItem key={category} asChild>
-                      <Link href={`/category/${category.toLowerCase().replace(/\s+/g, "-")}`}>{category}</Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Link href="/contact" className="text-foreground hover:text-primary transition-colors font-medium">
-                Contact
-              </Link>
-            </nav>
-
-            {/* Search Bar - Desktop */}
-            <div className="hidden lg:flex items-center space-x-2 flex-1 max-w-md mx-8">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  type="search"
-                  placeholder="Search t-shirts..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-muted/50 border-border focus:bg-background"
-                />
-              </div>
+            <div className="hidden md:flex items-center flex-1 justify-center">
+              <nav className="flex items-center space-x-6 xl:space-x-8">
+                <Link
+                  href="/"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/new-arrivals"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
+                >
+                  New Arrivals
+                </Link>
+                <Link
+                  href="/trending"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
+                >
+                  Trending
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-foreground hover:text-primary font-medium text-sm xl:text-base h-auto p-2"
+                    >
+                      Categories
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-48">
+                    {categories.map((category) => (
+                      <DropdownMenuItem key={category} asChild>
+                        <Link href={`/category/${category.toLowerCase().replace(/\s+/g, "-")}`}>{category}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Link
+                  href="/contact"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
+                >
+                  Contact
+                </Link>
+              </nav>
             </div>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center space-x-2">
-              {/* Search Button - Mobile */}
-              <Button variant="ghost" size="icon" className="lg:hidden">
-                <Search className="h-5 w-5" />
-              </Button>
-
+            {/* Desktop Right Side Actions */}
+            <div className="hidden sm:flex items-center space-x-2 flex-shrink-0">
               {/* Wishlist */}
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative h-10 w-10">
                 <Heart className="h-5 w-5" />
                 {wishlistCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-accent">
-                    {wishlistCount}
+                    {wishlistCount > 99 ? "99+" : wishlistCount}
                   </Badge>
                 )}
               </Button>
 
               {/* Cart */}
-              <Button variant="ghost" size="icon" className="relative" onClick={toggleCart}>
+              <Button variant="ghost" size="icon" className="relative h-10 w-10" onClick={toggleCart}>
                 <ShoppingCart className="h-5 w-5" />
                 {cartCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary">
-                    {cartCount}
+                    {cartCount > 99 ? "99+" : cartCount}
                   </Badge>
                 )}
               </Button>
@@ -108,7 +104,7 @@ export function Navigation() {
               {/* Profile */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" className="h-10 w-10">
                     <User className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -127,49 +123,42 @@ export function Navigation() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
-              {/* Mobile Menu Button */}
-              <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
             </div>
+
+            {/* Mobile Menu Button - Show hamburger on all devices */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 sm:h-10 sm:w-10"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
+            </Button>
           </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden border-t bg-background/95 backdrop-blur">
-              <div className="px-4 py-4 space-y-4">
-                {/* Mobile Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                  <Input
-                    type="search"
-                    placeholder="Search t-shirts..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-muted/50"
-                  />
-                </div>
-
+            <div className="border-t bg-background/95 backdrop-blur animate-in slide-in-from-top-2 duration-200">
+              <div className="px-3 sm:px-4 py-4 space-y-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
                 {/* Mobile Navigation Links */}
-                <nav className="flex flex-col space-y-3">
+                <nav className="flex flex-col space-y-1">
                   <Link
                     href="/"
-                    className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Home
                   </Link>
                   <Link
                     href="/new-arrivals"
-                    className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     New Arrivals
                   </Link>
                   <Link
                     href="/trending"
-                    className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Trending
@@ -177,13 +166,13 @@ export function Navigation() {
 
                   {/* Mobile Categories */}
                   <div className="py-2">
-                    <span className="text-muted-foreground font-medium text-sm">Categories</span>
-                    <div className="mt-2 space-y-2 pl-4">
+                    <span className="text-muted-foreground font-medium text-sm px-2">Categories</span>
+                    <div className="mt-2 space-y-1">
                       {categories.map((category) => (
                         <Link
                           key={category}
                           href={`/category/${category.toLowerCase().replace(/\s+/g, "-")}`}
-                          className="block text-foreground hover:text-primary transition-colors py-1"
+                          className="block text-foreground hover:text-primary hover:bg-muted/50 transition-all py-2 px-4 rounded-md text-sm"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {category}
@@ -194,17 +183,85 @@ export function Navigation() {
 
                   <Link
                     href="/contact"
-                    className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Contact
                   </Link>
                 </nav>
+
+                {/* Mobile Quick Actions */}
+                <div className="pt-4 border-t border-border/50">
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link
+                      href="/wishlist"
+                      className="flex items-center justify-center space-x-2 py-3 px-4 bg-muted/50 hover:bg-muted transition-colors rounded-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <Heart className="h-4 w-4" />
+                      <span className="text-sm font-medium">Wishlist</span>
+                      {wishlistCount > 0 && (
+                        <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full p-0 flex items-center justify-center text-xs bg-accent">
+                          {wishlistCount}
+                        </Badge>
+                      )}
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className="flex items-center justify-center space-x-2 py-3 px-4 bg-muted/50 hover:bg-muted transition-colors rounded-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <User className="h-4 w-4" />
+                      <span className="text-sm font-medium">Profile</span>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           )}
         </div>
       </header>
+
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur border-t border-border/50 supports-[backdrop-filter]:bg-background/60 sm:hidden">
+        <div className="flex items-center justify-around py-3 px-4 max-w-md mx-auto">
+          {/* Home */}
+          <Link href="/" className="flex flex-col items-center justify-center p-2 min-w-0">
+            <Home className="h-6 w-6 text-muted-foreground" />
+          </Link>
+
+          {/* Wishlist */}
+          <Link href="/wishlist" className="flex flex-col items-center justify-center p-2 min-w-0 relative">
+            <Heart className="h-6 w-6 text-muted-foreground" />
+            {wishlistCount > 0 && (
+              <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full p-0 flex items-center justify-center text-xs bg-accent">
+                {wishlistCount > 9 ? "9+" : wishlistCount}
+              </Badge>
+            )}
+          </Link>
+
+          {/* Cart */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex flex-col items-center justify-center p-2 h-auto min-w-0 relative"
+            onClick={toggleCart}
+          >
+            <ShoppingCart className="h-6 w-6 text-muted-foreground" />
+            {cartCount > 0 && (
+              <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full p-0 flex items-center justify-center text-xs bg-primary">
+                {cartCount > 9 ? "9+" : cartCount}
+              </Badge>
+            )}
+          </Button>
+
+          {/* Profile */}
+          <Link href="/profile" className="flex flex-col items-center justify-center p-2 min-w-0">
+            <User className="h-6 w-6 text-muted-foreground" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="h-14 sm:hidden" />
 
       {/* Cart Drawer */}
       <CartDrawer />
