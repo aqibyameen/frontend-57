@@ -1,67 +1,70 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Heart, ShoppingCart } from "lucide-react"
-import Image from "next/image"
-import { useState } from "react"
-import { useCart, useCartActions } from "@/lib/cart-store"
-import { cn } from "@/lib/utils"
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Heart, ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { useCart, useCartActions } from "@/lib/cart-store";
+import { cn } from "@/lib/utils";
 
 interface Product {
-  id: string
-  name: string
-  description: string
-  sizes: string[]
-  gender: string[]
-  price: number
-  discountPrice?: number
-  fabric: string
-  category: string
-  images: string[]
-  createdAt: string
-  updatedAt: string
+  id: string;
+  name: string;
+  description: string;
+  sizes: string[];
+  gender: string[];
+  price: number;
+  discountPrice?: number;
+  fabric: string;
+  category: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ProductCardProps {
-  product: Product
-  onProductClick?: (product: Product) => void
+  product: Product;
+  onProductClick?: (product: Product) => void;
 }
 
 export function ProductCard({ product, onProductClick }: ProductCardProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const { state } = useCart()
-  const { addToCart, addToWishlist, removeFromWishlist } = useCartActions()
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { state } = useCart();
+  const { addToCart, addToWishlist, removeFromWishlist } = useCartActions();
 
-  const hasDiscount = product.discountPrice && product.discountPrice < product.price
-  const displayPrice = hasDiscount ? product.discountPrice : product.price
+  const hasDiscount =
+    product.discountPrice && product.discountPrice < product.price;
+  const displayPrice = hasDiscount ? product.discountPrice : product.price;
   const discountPercentage = hasDiscount
-    ? Math.round(((product.price - product.discountPrice!) / product.price) * 100)
-    : 0
+    ? Math.round(
+        ((product.price - product.discountPrice!) / product.price) * 100
+      )
+    : 0;
 
-  const isInWishlist = state.wishlist.some((item) => item.id === product.id)
+  const isInWishlist = state.wishlist.some((item) => item.id === product.id);
 
   const handleImageHover = () => {
     if (product.images.length > 1) {
-      setCurrentImageIndex((prev) => (prev + 1) % product.images.length)
+      setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
     }
-  }
+  };
 
   const resetImageIndex = () => {
-    setCurrentImageIndex(0)
-  }
+    setCurrentImageIndex(0);
+  };
 
   const handleCardClick = () => {
-    onProductClick?.(product)
-  }
+    onProductClick?.(product);
+  };
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.stopPropagation();
     if (isInWishlist) {
-      removeFromWishlist(product.id)
+      removeFromWishlist(product.id);
     } else {
       addToWishlist({
         id: product.id,
@@ -70,12 +73,12 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
         discountPrice: product.discountPrice,
         image: product.images[0] || "/placeholder.svg",
         category: product.category,
-      })
+      });
     }
-  }
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.stopPropagation();
     // Add with default size and color - in real app, this would open size/color selector
     addToCart({
       id: product.id,
@@ -86,8 +89,8 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
       size: product.sizes[0] || "M",
       color: "Black", // Default color
       quantity: 1,
-    })
-  }
+    });
+  };
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
@@ -98,7 +101,10 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
         onClick={handleCardClick}
       >
         <Image
-          src={product.images[currentImageIndex] || "/placeholder.svg?height=240&width=320&query=product"}
+          src={
+            product.images[currentImageIndex] ||
+            "/placeholder.svg?height=240&width=320&query=product"
+          }
           alt={product.name}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -113,7 +119,7 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
           variant="ghost"
           className={cn(
             "absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background",
-            isInWishlist && "text-red-500 hover:text-red-600",
+            isInWishlist && "text-red-500 hover:text-red-600"
           )}
           onClick={handleWishlistToggle}
         >
@@ -136,13 +142,17 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
       <CardContent className="p-3" onClick={handleCardClick}>
         <div className="space-y-2">
           <div className="flex items-start justify-between">
-            <h3 className="font-semibold text-lg line-clamp-1">{product.name}</h3>
+            <h3 className="font-semibold text-lg line-clamp-1">
+              {product.name}
+            </h3>
             <Badge variant="secondary" className="text-xs">
               {product.category}
             </Badge>
           </div>
 
-          <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            {product.description}
+          </p>
 
           <div className="flex flex-wrap gap-1">
             {product.gender.map((g) => (
@@ -154,12 +164,18 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-lg">${displayPrice.toLocaleString()}</span>
+              <span className="font-bold text-lg">
+                ${displayPrice?.toLocaleString()}
+              </span>
               {hasDiscount && (
-                <span className="text-sm text-muted-foreground line-through">${product.price.toLocaleString()}</span>
+                <span className="text-sm text-muted-foreground line-through">
+                  ${product.price.toLocaleString()}
+                </span>
               )}
             </div>
-            <div className="text-xs text-muted-foreground">{product.fabric}</div>
+            <div className="text-xs text-muted-foreground">
+              {product.fabric}
+            </div>
           </div>
 
           <div className="flex flex-wrap gap-1">
@@ -189,9 +205,9 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
             variant="outline"
             size="sm"
             onClick={(e) => {
-              e.stopPropagation()
+              e.stopPropagation();
               // Handle buy now - would typically add to cart and redirect to checkout
-              handleAddToCart(e)
+              handleAddToCart(e);
             }}
           >
             Buy Now
@@ -199,5 +215,5 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
