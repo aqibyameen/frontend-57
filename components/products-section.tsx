@@ -34,21 +34,6 @@ interface Product {
 
 const Product: Product[] = [
   {
-    id: "p1",
-    name: "Madara Uchiha Tee",
-    description:
-      "Premium quality oversized black t-shirt featuring Madara Uchiha inspired anime artwork.",
-    sizes: ["S", "M", "L", "XL"],
-    gender: ["Men", "Women"],
-    price: 2500,
-    discountPrice: 1999,
-    fabric: "100% Cotton",
-    category: "Anime Tees",
-    images: ["/mockups/madara-1.jpg", "/mockups/madara-2.jpg"],
-    createdAt: "2025-09-12T10:00:00Z",
-    updatedAt: "2025-09-12T14:30:00Z",
-  },
-  {
     id: "p2",
     name: "Zenitsu Agatsuma Tee",
     description:
@@ -93,23 +78,7 @@ const Product: Product[] = [
     createdAt: "2025-09-14T16:40:00Z",
     updatedAt: "2025-09-14T19:00:00Z",
   },
-  {
-    id: "p5",
-    name: "Monkey D. Luffy Tee",
-    description:
-      "High-quality oversized t-shirt featuring Monkey D. Luffy anime artwork.",
-    sizes: ["S", "M", "L", "XL"],
-    gender: ["Men", "Women"],
-    price: 2800,
-    discountPrice: 2299,
-    fabric: "100% Cotton",
-    category: "Anime Tees",
-    images: ["/mockups/luffy-1.jpg", "/mockups/luffy-2.jpg"],
-    createdAt: "2025-09-12T13:10:00Z",
-    updatedAt: "2025-09-12T20:20:00Z",
-  },
 ];
-
 
 export function ProductsSection() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
