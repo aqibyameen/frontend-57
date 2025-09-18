@@ -67,7 +67,7 @@ export default function AdminDashboard() {
             </a>
           ))}
           <a
-            href="/admin/login"
+            href="/api/admin/logout"
             className="flex items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-500/20 transition"
           >
             <LogOut size={20} />

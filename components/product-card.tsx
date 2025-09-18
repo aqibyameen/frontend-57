@@ -1,3 +1,5 @@
+/** @format */
+
 "use client";
 
 import type React from "react";
@@ -79,7 +81,7 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Add with default size and color - in real app, this would open size/color selector
+
     addToCart({
       id: product.id,
       name: product.name,
@@ -93,9 +95,10 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
   };
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer">
+    <Card className="group transition-all duration-300 hover:shadow-lg cursor-pointer flex flex-col h-[400px]">
+      {/* Image Section (75%) */}
       <div
-        className="relative aspect-[4/3] overflow-hidden"
+        className="relative w-full flex-[3] overflow-hidden aspect-[4/3]" // 🔑 same ratio for all images
         onMouseEnter={handleImageHover}
         onMouseLeave={resetImageIndex}
         onClick={handleCardClick}
@@ -107,13 +110,15 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
           }
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover w-full h-full"
         />
+
         {hasDiscount && (
           <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground">
             -{discountPercentage}%
           </Badge>
         )}
+
         <Button
           size="icon"
           variant="ghost"
@@ -121,10 +126,14 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
             "absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background",
             isInWishlist && "text-red-500 hover:text-red-600"
           )}
-          onClick={handleWishlistToggle}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleWishlistToggle(e);
+          }}
         >
           <Heart className={cn("h-4 w-4", isInWishlist && "fill-current")} />
         </Button>
+
         {product.images.length > 1 && (
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1">
             {product.images.map((_, index) => (
@@ -139,10 +148,11 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
         )}
       </div>
 
-      <CardContent className="p-3" onClick={handleCardClick}>
-        <div className="space-y-2">
+      {/* Content Section (25%) */}
+      <div className="flex-[1] flex flex-col justify-between w-full">
+        <CardContent className="p-3" onClick={handleCardClick}>
           <div className="flex items-start justify-between">
-            <h3 className="font-semibold text-lg line-clamp-1">
+            <h3 className="font-semibold text-sm line-clamp-1">
               {product.name}
             </h3>
             <Badge variant="secondary" className="text-xs">
@@ -150,70 +160,38 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
             </Badge>
           </div>
 
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {product.description}
-          </p>
-
-          <div className="flex flex-wrap gap-1">
-            {product.gender.map((g) => (
-              <Badge key={g} variant="outline" className="text-xs">
-                {g}
-              </Badge>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-lg">
-                ${displayPrice?.toLocaleString()}
+          <div className="flex items-center justify-between mt-2">
+            <span className="font-bold text-base">
+              ${displayPrice?.toLocaleString()}
+            </span>
+            {hasDiscount && (
+              <span className="text-xs text-muted-foreground line-through">
+                ${product.price.toLocaleString()}
               </span>
-              {hasDiscount && (
-                <span className="text-sm text-muted-foreground line-through">
-                  ${product.price.toLocaleString()}
-                </span>
-              )}
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {product.fabric}
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-1">
-            <span className="text-xs text-muted-foreground">Sizes:</span>
-            {product.sizes.slice(0, 3).map((size) => (
-              <Badge key={size} variant="outline" className="text-xs">
-                {size}
-              </Badge>
-            ))}
-            {product.sizes.length > 3 && (
-              <Badge variant="outline" className="text-xs">
-                +{product.sizes.length - 3}
-              </Badge>
             )}
           </div>
-        </div>
-      </CardContent>
+        </CardContent>
 
-      <CardFooter className="p-3 pt-0">
-        <div className="flex gap-2 w-full">
-          <Button className="flex-1 py-3" size="sm" onClick={handleAddToCart}>
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </Button>
-          <Button
-            className="flex-1 py-3 bg-transparent"
-            variant="outline"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              // Handle buy now - would typically add to cart and redirect to checkout
-              handleAddToCart(e);
-            }}
-          >
-            Buy Now
-          </Button>
-        </div>
-      </CardFooter>
+        <CardFooter className="p-3 pt-0">
+          <div className="flex gap-2 w-full">
+            <Button className="flex-1 py-2" size="sm" onClick={handleAddToCart}>
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Add
+            </Button>
+            <Button
+              className="flex-1 py-2 bg-transparent"
+              variant="outline"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(e); // could redirect to checkout if you want Buy Now flow
+              }}
+            >
+              Buy
+            </Button>
+          </div>
+        </CardFooter>
+      </div>
     </Card>
   );
 }

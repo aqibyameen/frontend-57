@@ -34,7 +34,10 @@ export async function POST(req: Request) {
     }
 
     // Create JWT with jose
-    const secret = new TextEncoder().encode(JWT_SECRET);
+    // Both in route.ts and middleware.ts
+    const secret = new TextEncoder().encode(
+      process.env.JWT_SECRET || "supersecretkey"
+    );
     const token = await new SignJWT({
       id: user._id.toString(),
       role: user.role,
