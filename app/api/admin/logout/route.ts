@@ -1,17 +1,19 @@
 /** @format */
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const response = NextResponse.redirect("/admin/login");
+    const response = NextResponse.redirect(new URL("/admin/login", req.url));
 
-    // Clear token cookie
     response.cookies.set("token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 0, // expire immediately
+      maxAge: 0,
+      sameSite: "strict", // include if used during login
     });
+
+    console.log("Token cookie cleared, redirecting to login");
 
     return response;
   } catch (err) {

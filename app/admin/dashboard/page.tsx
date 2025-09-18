@@ -89,13 +89,16 @@ export default function AdminDashboard() {
               {open && <span>{link.name}</span>}
             </a>
           ))}
-          <a
-            href="/api/admin/logout"
+          <button
+            onClick={async () => {
+              await fetch("/api/admin/logout");
+              window.location.href = "/admin/login"; // redirect after clearing token
+            }}
             className="flex items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-500/20 transition"
           >
             <LogOut size={20} />
             {open && "Logout"}
-          </a>
+          </button>
         </nav>
       </aside>
 
