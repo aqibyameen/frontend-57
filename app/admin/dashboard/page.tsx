@@ -11,26 +11,14 @@ import jwt from "jsonwebtoken";
 
 export default function AdminDashboard() {
   const router = useRouter();
-  // useEffect(() => {
-  //   const token = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("token="))
-  //     ?.split("=")[1];
+  const handleLogout = async() => {
+    // Clear the token cookie by setting it to an empty value and expiring it immediately
+    const response = await fetch('/api/admin/logout')
+    if (response.ok) {
+      router.push("/admin/login");
+    }
+  }
 
-  //   if (!token) {
-  //     router.push("/admin/login");
-  //     return;
-  //   }
-
-  //   try {
-  //     const decoded: any = jwt.decode(token);
-  //     if (decoded?.role !== "admin") {
-  //       router.push("/admin/login");
-  //     }
-  //   } catch {
-  //     router.push("/admin/login");
-  //   }
-  // }, [router]);
   const [open, setOpen] = useState(true); // Desktop sidebar open by default
   const [mobileOpen, setMobileOpen] = useState(false); // Separate state for mobile
 
@@ -96,7 +84,7 @@ export default function AdminDashboard() {
             }}
             className="flex items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-500/20 transition"
           >
-            <LogOut size={20} />
+            <LogOut size={20} onClick={handleLogout} />
             {open && "Logout"}
           </button>
         </nav>
