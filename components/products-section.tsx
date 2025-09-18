@@ -1,137 +1,222 @@
-"use client"
+/** @format */
 
-import { useState, useEffect } from "react"
-import { ProductCard } from "./product-card"
-import { ProductModal } from "./product-modal"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { Search, Grid, List } from "lucide-react"
+"use client";
+
+import { useState, useEffect } from "react";
+import { ProductCard } from "./product-card";
+import { ProductModal } from "./product-modal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Search, Grid, List } from "lucide-react";
 
 interface Product {
-  id: string
-  name: string
-  description: string
-  sizes: string[]
-  gender: string[]
-  price: number
-  discountPrice?: number
-  fabric: string
-  category: string
-  images: string[]
-  createdAt: string
-  updatedAt: string
+  id: string;
+  name: string;
+  description: string;
+  sizes: string[];
+  gender: string[];
+  price: number;
+  discountPrice?: number;
+  fabric: string;
+  category: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
+const Product: Product[] = [
+  {
+    id: "p1",
+    name: "Classic White T-Shirt",
+    description:
+      "A timeless crew-neck t-shirt made with soft cotton fabric, perfect for casual wear.",
+    sizes: ["S", "M", "L", "XL"],
+    gender: ["Men", "Women"],
+    price: 1200,
+    discountPrice: 950,
+    fabric: "100% Cotton",
+    category: "T-Shirts",
+    images: [
+      "/images/products/white-tshirt-front.jpg",
+      "/images/products/white-tshirt-back.jpg",
+    ],
+    createdAt: "2025-09-01T10:00:00Z",
+    updatedAt: "2025-09-10T14:30:00Z",
+  },
+  {
+    id: "p2",
+    name: "Slim Fit Blue Jeans",
+    description:
+      "Stylish slim-fit denim jeans with stretch for comfort and durability.",
+    sizes: ["30", "32", "34", "36"],
+    gender: ["Men"],
+    price: 3500,
+    discountPrice: 2999,
+    fabric: "Denim (98% Cotton, 2% Spandex)",
+    category: "Jeans",
+    images: [
+      "/images/products/blue-jeans-front.jpg",
+      "/images/products/blue-jeans-back.jpg",
+    ],
+    createdAt: "2025-08-15T09:20:00Z",
+    updatedAt: "2025-09-12T18:10:00Z",
+  },
+  {
+    id: "p3",
+    name: "Floral Summer Dress",
+    description:
+      "Lightweight sleeveless dress with floral patterns, ideal for summer outings.",
+    sizes: ["S", "M", "L"],
+    gender: ["Women"],
+    price: 4200,
+    discountPrice: 3699,
+    fabric: "Rayon",
+    category: "Dresses",
+    images: [
+      "/images/products/floral-dress-front.jpg",
+      "/images/products/floral-dress-back.jpg",
+    ],
+    createdAt: "2025-07-25T12:00:00Z",
+    updatedAt: "2025-09-14T11:15:00Z",
+  },
+  {
+    id: "p4",
+    name: "Running Sneakers",
+    description:
+      "Lightweight, breathable sneakers designed for comfort and performance during runs.",
+    sizes: ["7", "8", "9", "10", "11"],
+    gender: ["Men", "Women"],
+    price: 6500,
+    discountPrice: 5799,
+    fabric: "Mesh + Rubber Sole",
+    category: "Footwear",
+    images: [
+      "/images/products/sneakers-front.jpg",
+      "/images/products/sneakers-side.jpg",
+    ],
+    createdAt: "2025-06-18T16:40:00Z",
+    updatedAt: "2025-09-10T19:00:00Z",
+  },
+  {
+    id: "p5",
+    name: "Leather Jacket",
+    description:
+      "Premium genuine leather jacket with zip closure and multiple pockets.",
+    sizes: ["M", "L", "XL"],
+    gender: ["Men"],
+    price: 12000,
+    discountPrice: 9999,
+    fabric: "100% Genuine Leather",
+    category: "Jackets",
+    images: [
+      "/images/products/leather-jacket-front.jpg",
+      "/images/products/leather-jacket-back.jpg",
+    ],
+    createdAt: "2025-05-05T13:10:00Z",
+    updatedAt: "2025-09-11T20:20:00Z",
+  },
+];
+
 export function ProductsSection() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [products, setProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("all")
-  const [selectedGender, setSelectedGender] = useState<string>("all")
-  const [sortBy, setSortBy] = useState<string>("name")
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-
-  const fetchProducts = async (): Promise<Product[]> => {
-    try {
-      const response = await fetch("/api/get-product", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-
-      const data = await response.json()
-
-      // If your API returns products in a different structure, adjust accordingly
-      // For example, if it returns { products: [...] }, use data.products
-      return Array.isArray(data) ? data : data.products || []
-    } catch (error) {
-      console.error("Error fetching products:", error)
-      throw error
-    }
-  }
-
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedGender, setSelectedGender] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("name");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  console.log("Products:", products);
   const handleProductClick = (product: Product) => {
-    setSelectedProduct(product)
-    setIsModalOpen(true)
-  }
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedProduct(null)
-  }
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        setLoading(true)
-        const data = await fetchProducts()
-        setProducts(data)
-        setFilteredProducts(data)
+        setLoading(true);
+        const data = Product; // Replace with actual fetch call if needed
+        setProducts(data);
+        setFilteredProducts(data);
       } catch (error) {
-        console.error("Failed to fetch products:", error)
+        console.error("Failed to fetch products:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    loadProducts()
-  }, [])
+    loadProducts();
+  }, []);
 
   useEffect(() => {
-    let filtered = products
+    let filtered = products;
 
     // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(
         (product) =>
           product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.category.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+          product.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     // Filter by category
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((product) => product.category === selectedCategory)
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory
+      );
     }
 
     // Filter by gender
     if (selectedGender !== "all") {
       filtered = filtered.filter((product) =>
-        product.gender.some((g) => g.toLowerCase() === selectedGender.toLowerCase()),
-      )
+        product.gender.some(
+          (g) => g.toLowerCase() === selectedGender.toLowerCase()
+        )
+      );
     }
 
     // Sort products
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "price-low":
-          return (a.discountPrice || a.price) - (b.discountPrice || b.price)
+          return (a.discountPrice || a.price) - (b.discountPrice || b.price);
         case "price-high":
-          return (b.discountPrice || b.price) - (a.discountPrice || a.price)
+          return (b.discountPrice || b.price) - (a.discountPrice || a.price);
         case "newest":
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
         case "name":
         default:
-          return a.name.localeCompare(b.name)
+          return a.name.localeCompare(b.name);
       }
-    })
+    });
 
-    setFilteredProducts(filtered)
-  }, [products, searchTerm, selectedCategory, selectedGender, sortBy])
+    setFilteredProducts(filtered);
+  }, [products, searchTerm, selectedCategory, selectedGender, sortBy]);
 
-  const categories = [...new Set(products.map((p) => p.category))]
-  const genders = [...new Set(products.flatMap((p) => p.gender))]
+  const categories = [...new Set(products.map((p) => p.category))];
+  const genders = [...new Set(products.flatMap((p) => p.gender))];
 
   if (loading) {
     return (
@@ -149,7 +234,7 @@ export function ProductsSection() {
           ))}
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -158,7 +243,9 @@ export function ProductsSection() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Our Products</h1>
-          <p className="text-muted-foreground">Discover our collection of {products.length} premium products</p>
+          <p className="text-muted-foreground">
+            Discover our collection of {products.length} premium products
+          </p>
         </div>
 
         {/* Filters and Search */}
@@ -174,7 +261,10 @@ export function ProductsSection() {
               />
             </div>
 
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger className="w-full md:w-48">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
@@ -237,7 +327,10 @@ export function ProductsSection() {
             {searchTerm && (
               <Badge variant="secondary" className="gap-1">
                 Search: {searchTerm}
-                <button onClick={() => setSearchTerm("")} className="ml-1 hover:text-destructive">
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="ml-1 hover:text-destructive"
+                >
                   ×
                 </button>
               </Badge>
@@ -245,7 +338,10 @@ export function ProductsSection() {
             {selectedCategory !== "all" && (
               <Badge variant="secondary" className="gap-1">
                 Category: {selectedCategory}
-                <button onClick={() => setSelectedCategory("all")} className="ml-1 hover:text-destructive">
+                <button
+                  onClick={() => setSelectedCategory("all")}
+                  className="ml-1 hover:text-destructive"
+                >
                   ×
                 </button>
               </Badge>
@@ -253,7 +349,10 @@ export function ProductsSection() {
             {selectedGender !== "all" && (
               <Badge variant="secondary" className="gap-1">
                 Gender: {selectedGender}
-                <button onClick={() => setSelectedGender("all")} className="ml-1 hover:text-destructive">
+                <button
+                  onClick={() => setSelectedGender("all")}
+                  className="ml-1 hover:text-destructive"
+                >
                   ×
                 </button>
               </Badge>
@@ -271,13 +370,15 @@ export function ProductsSection() {
         {/* Products Grid */}
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No products found matching your criteria.</p>
+            <p className="text-muted-foreground">
+              No products found matching your criteria.
+            </p>
             <Button
               variant="outline"
               onClick={() => {
-                setSearchTerm("")
-                setSelectedCategory("all")
-                setSelectedGender("all")
+                setSearchTerm("");
+                setSelectedCategory("all");
+                setSelectedGender("all");
               }}
               className="mt-4"
             >
@@ -287,18 +388,28 @@ export function ProductsSection() {
         ) : (
           <div
             className={`grid gap-6 ${
-              viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
+              viewMode === "grid"
+                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "grid-cols-1"
             }`}
           >
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} onProductClick={handleProductClick} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onProductClick={handleProductClick}
+              />
             ))}
           </div>
         )}
       </div>
 
       {/* Product Modal */}
-      <ProductModal product={selectedProduct} isOpen={isModalOpen} onClose={handleCloseModal} />
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </>
-  )
+  );
 }
