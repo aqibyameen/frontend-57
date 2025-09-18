@@ -58,6 +58,7 @@
     "jspdf": "^3.0.2",
     "konva": "^10.0.2",
     "lucide-react": "^0.454.0",
+    "mongodb": "^6.19.0",
     "mongoose": "^8.18.1",
     "next": "14.2.16",
     "next-themes": "latest",
