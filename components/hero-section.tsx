@@ -36,7 +36,7 @@ export default function HeroSection() {
 
       {/* Content container */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="w-full flex flex-col lg:flex-row md:flex-row  justify-between items-center gap-x-16 min-h-screen py-16 sm:py-20">
+        <div className="w-full flex flex-col lg:flex-row md:flex-row   items-center gap-x-16 min-h-screen py-16 sm:py-20">
           
           {/* Left Side (Text) */}
           <motion.div
@@ -45,7 +45,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            <h1 className="text-lg sm:text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+            <h1 className="text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
               From Screen to Street
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
@@ -54,7 +54,7 @@ export default function HeroSection() {
             </h1>
 
             <motion.p
-              className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-200 max-w-sm sm:max-w-md lg:max-w-lg mx-auto lg:mx-0"
+              className="text-sm md:text-base lg:text-lg xl:text-xl text-gray-200 max-w-sm sm:max-w-md lg:max-w-lg mx-auto lg:mx-0"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -95,7 +95,7 @@ export default function HeroSection() {
 
           {/* Right Side (Models + Kakashi) */}
           <motion.div
-            className="flex justify-end items-center order-2 mt-10 sm:mb-10 lg:mt-0"
+            className="flex justify-center items-center order-2 mt-13 sm:mb-10 lg:mt-0"
             initial={{ opacity: 0, x: 80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.3 }}
@@ -119,7 +119,7 @@ export default function HeroSection() {
 
               {/* Floating Kakashi */}
               <motion.div
-                className="hidden sm:block absolute -bottom-10 -left-16 lg:-left-24"
+                className=" sm:block absolute -bottom-10 -left-16 lg:-left-24"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >

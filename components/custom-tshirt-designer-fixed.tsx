@@ -163,7 +163,7 @@ export default function CustomTshirtDesigner() {
   const currentSideElements = designElements.filter((el) => el.side === currentSide);
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
+    <div className="w-full h-screen flex flex-col items-center gap-4 mt-4  sm:mt-8">
       {/* Side toggle */}
       <div className="flex justify-center gap-4">
         <Button
@@ -240,8 +240,8 @@ export default function CustomTshirtDesigner() {
       </div>
 
       {/* Controls */}
-      <div className="flex gap-4 items-center">
-        <input type="file" accept="image/*" onChange={handleUpload} />
+      <div className="flex gap-4 items-center justify-center sm:flex-row flex-col  ">
+        <input type="file" accept="image/*" onChange={handleUpload}  className="border py-4 px-3 rounded"/>
         <Button onClick={addToCart}>
           <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
         </Button>
