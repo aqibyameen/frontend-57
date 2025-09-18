@@ -6,7 +6,7 @@ let isConnected = false;
 
 export const connectDB = async (): Promise<void> => {
   if (isConnected) return;
-  const mongoUri = process.env.MONGODB_URI;
+  const mongoUri = process.env.MONGODB_URI!;
   try {
     await mongoose.connect(mongoUri!, {
       dbName: "nxtgenwear",
