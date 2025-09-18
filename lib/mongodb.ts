@@ -1,18 +1,18 @@
-/** @format */
-
 import mongoose from "mongoose";
 
-let isConnected = false;
+const MONGO_URI = process.env.MONGODB_URI!;
 
-export const connectDB = async (): Promise<void> => {
-  if (isConnected) return;
-  const mongoUri = process.env.MONGODB_URI!;
-  try {
-    await mongoose.connect(mongoUri!);
-    isConnected = true;
-    console.log("✅ MongoDB Connected");
-  } catch (error) {
-    console.error("MongoDB Connection Error:", error);
-    throw error;
+if (!MONGO_URI) throw new Error("❌ Please add MONGO_URI in .env.local");
+
+let cached = (global as any).mongoose || { conn: null, promise: null };
+
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGO_URI).then((m) => m);
   }
-};
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
