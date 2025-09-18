@@ -3,11 +3,34 @@
 // app/admin/dashboard/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, LogOut, Home, Users, Settings, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import jwt from "jsonwebtoken";
 
 export default function AdminDashboard() {
+  const router = useRouter();
+  // useEffect(() => {
+  //   const token = document.cookie
+  //     .split("; ")
+  //     .find((row) => row.startsWith("token="))
+  //     ?.split("=")[1];
+
+  //   if (!token) {
+  //     router.push("/admin/login");
+  //     return;
+  //   }
+
+  //   try {
+  //     const decoded: any = jwt.decode(token);
+  //     if (decoded?.role !== "admin") {
+  //       router.push("/admin/login");
+  //     }
+  //   } catch {
+  //     router.push("/admin/login");
+  //   }
+  // }, [router]);
   const [open, setOpen] = useState(true); // Desktop sidebar open by default
   const [mobileOpen, setMobileOpen] = useState(false); // Separate state for mobile
 
