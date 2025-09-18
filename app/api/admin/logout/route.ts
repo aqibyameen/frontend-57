@@ -21,3 +21,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
+
+console.log("Logout route loaded");
