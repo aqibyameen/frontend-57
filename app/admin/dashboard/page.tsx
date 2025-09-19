@@ -3,112 +3,124 @@
 // app/admin/dashboard/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, LogOut, Home, Users, Settings, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import jwt from "jsonwebtoken";
+import AddProductModal from "@/components/addProductModal";
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const handleLogout = async() => {
-    // Clear the token cookie by setting it to an empty value and expiring it immediately
-    const response = await fetch('/api/admin/logout')
-    if (response.ok) {
-      router.push("/admin/login");
-    }
-  }
+  const [open, setOpen] = useState(true); // controls desktop collapsed / expanded
+  const [mobileOpen, setMobileOpen] = useState(false); // controls mobile drawer
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const [open, setOpen] = useState(true); // Desktop sidebar open by default
-  const [mobileOpen, setMobileOpen] = useState(false); // Separate state for mobile
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout");
+    router.push("/admin/login");
+  };
 
   const sidebarLinks = [
-    { name: "Dashboard", icon: <Home size={20} />, href: "#" },
-    { name: "Users", icon: <Users size={20} />, href: "#" },
-    { name: "Settings", icon: <Settings size={20} />, href: "#" },
+    { name: "Dashboard", icon: <Home size={18} />, href: "#" },
+    { name: "Users", icon: <Users size={18} />, href: "#" },
+    { name: "Settings", icon: <Settings size={18} />, href: "#" },
   ];
 
   return (
-    <div className="flex min-h-screen bg-[#0a192f] text-white">
+    <div className="min-h-screen bg-[#0a192f] text-white flex">
       {/* Sidebar */}
       <aside
-        className={`fixed lg:relative top-0 left-0 h-full bg-[#0f1c3f]/90 backdrop-blur-md shadow-lg z-50 transition-all duration-300
-          ${
-            mobileOpen
-              ? "translate-x-0 w-64"
-              : "-translate-x-full w-64 lg:translate-x-0"
-          } 
+        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out
+          w-64 bg-[#0f1c3f]/90 backdrop-blur-md shadow-lg
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0
           ${open ? "lg:w-64" : "lg:w-20"}`}
+        aria-hidden={!mobileOpen && !open}
       >
-        <div className="flex items-center justify-between p-5 border-b border-white/10">
-          <h2
-            className={`text-xl font-bold tracking-wide ${
-              !open && "hidden lg:block"
-            }`}
-          >
-            Admin
-          </h2>
+        <div
+          className={`flex items-center px-4 py-3 border-b border-white/10
+            ${!open ? "lg:justify-center" : "justify-between"}`}
+        >
+          {open ? (
+            <h2 className="text-xl font-bold tracking-wide">Admin</h2>
+          ) : (
+            /* keep space for icon alignment when collapsed */
+            <div className="w-6" />
+          )}
 
-          {/* Close button only on mobile */}
-          <button
-            className="lg:hidden text-white"
-            onClick={() => setMobileOpen(false)}
-          >
-            <X size={24} />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Close button on mobile */}
+            <button
+              className="lg:hidden p-1"
+              onClick={() => setMobileOpen(false)}
+              aria-label="Close menu"
+            >
+              <X size={20} />
+            </button>
 
-          {/* Toggle button only on desktop */}
-          <button
-            className="hidden lg:block text-white"
-            onClick={() => setOpen(!open)}
-          >
-            <Menu size={24} />
-          </button>
+            {/* Toggle collapse on desktop */}
+            <button
+              className="hidden lg:inline-flex p-1"
+              onClick={() => setOpen((s) => !s)}
+              aria-expanded={open}
+              aria-label="Toggle sidebar"
+            >
+              <Menu size={20} />
+            </button>
+          </div>
         </div>
 
-        <nav className="space-y-4 px-5 mt-6">
+        <nav className="p-3 space-y-2">
           {sidebarLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="flex items-center gap-3 rounded-lg p-3 text-gray-200 hover:bg-white/10 transition"
+              className={`flex items-center gap-3 rounded-lg p-3 text-gray-200 hover:bg-white/10 transition
+                ${!open ? "justify-center" : ""}`}
             >
               {link.icon}
-              {open && <span>{link.name}</span>}
+              {open && <span className="truncate">{link.name}</span>}
             </a>
           ))}
+
           <button
-            onClick={async () => {
-              await fetch("/api/admin/logout");
-              window.location.href = "/admin/login"; // redirect after clearing token
-            }}
-            className="flex items-center gap-3 rounded-lg p-3 text-red-400 hover:bg-red-500/20 transition"
+            onClick={handleLogout}
+            className={`flex items-center gap-3 rounded-lg w-full p-3 text-red-400 hover:bg-red-500/20 transition
+              ${!open ? "justify-center" : ""}`}
           >
-            <LogOut size={20} onClick={handleLogout} />
-            {open && "Logout"}
+            <LogOut size={18} />
+            {open && <span>Logout</span>}
           </button>
         </nav>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* Mobile overlay (only when drawer open) */}
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setMobileOpen(false)}
-        ></div>
+          aria-hidden="true"
+        />
       )}
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 lg:p-8">
-        {/* Top bar for mobile */}
+      {/* Main content: gets left margin on lg depending on sidebar width */}
+      <main
+        className={`flex-1 min-h-screen transition-all duration-300
+          p-4 sm:p-6 lg:p-8
+          ${open ? "lg:ml-64" : "lg:ml-20"}`}
+      >
+        {/* Mobile top bar (shows menu button) */}
         <div className="lg:hidden mb-6 flex justify-between items-center">
           <h1 className="text-xl font-bold">Dashboard</h1>
-          <button onClick={() => setMobileOpen(true)}>
+          <button
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
+            className="p-1"
+          >
             <Menu size={28} />
           </button>
         </div>
 
-        {/* Dashboard Heading */}
         <motion.h1
           className="mb-8 text-2xl lg:text-3xl font-extrabold tracking-wide"
           initial={{ opacity: 0, y: -30 }}
@@ -118,8 +130,14 @@ export default function AdminDashboard() {
           Dashboard Overview
         </motion.h1>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <button
+          onClick={() => setModalOpen(true)}
+          className="mb-6 rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 transition"
+        >
+          + Add Product
+        </button>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {[
             {
               title: "Users",
@@ -136,14 +154,19 @@ export default function AdminDashboard() {
               value: "$12,340",
               gradient: "from-orange-400 via-red-500 to-pink-600",
             },
+            {
+              title: "Products",
+              value: "320",
+              gradient: "from-green-400 via-emerald-500 to-teal-600",
+            },
           ].map((card, index) => (
             <motion.div
               key={card.title}
-              className={`rounded-md bg-gradient-to-r ${card.gradient} p-6 shadow-xl`}
+              className={`rounded-lg bg-gradient-to-r ${card.gradient} p-6 shadow-xl`}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 + index * 0.2 }}
-              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.7, delay: 0.15 + index * 0.12 }}
+              whileHover={{ scale: 1.03 }}
             >
               <h2 className="text-lg font-medium">{card.title}</h2>
               <p className="mt-3 text-2xl lg:text-3xl font-extrabold">
@@ -153,6 +176,8 @@ export default function AdminDashboard() {
           ))}
         </div>
       </main>
+
+      <AddProductModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
   );
 }
