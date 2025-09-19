@@ -32,54 +32,6 @@ interface Product {
   updatedAt: string;
 }
 
-const Product: Product[] = [
-  {
-    id: "p2",
-    name: "Zenitsu Agatsuma Tee",
-    description:
-      "Stylish anime t-shirt with Zenitsu’s iconic design, made with soft cotton fabric.",
-    sizes: ["S", "M", "L", "XL"],
-    gender: ["Men", "Women"],
-    price: 2400,
-    discountPrice: 1899,
-    fabric: "100% Cotton",
-    category: "Anime Tees",
-    images: ["/mockups/zenitsu-1.jpg", "/mockups/zenitsu-2.jpg"],
-    createdAt: "2025-09-14T09:00:00Z",
-    updatedAt: "2025-09-14T11:15:00Z",
-  },
-  {
-    id: "p3",
-    name: "Naruto Uzumaki Tee",
-    description:
-      "Bold anime-inspired oversized t-shirt featuring Naruto Uzumaki artwork.",
-    sizes: ["S", "M", "L", "XL"],
-    gender: ["Men", "Women"],
-    price: 2600,
-    discountPrice: 2099,
-    fabric: "100% Cotton",
-    category: "Anime Tees",
-    images: ["/mockups/naruto-1.jpg", "/mockups/naruto-2.jpg"],
-    createdAt: "2025-09-14T12:00:00Z",
-    updatedAt: "2025-09-14T15:00:00Z",
-  },
-  {
-    id: "p4",
-    name: "Kakashi Hatake Tee",
-    description:
-      "Trendy anime t-shirt showcasing Kakashi Hatake design, perfect for anime fans.",
-    sizes: ["S", "M", "L", "XL"],
-    gender: ["Men", "Women"],
-    price: 2700,
-    discountPrice: 2199,
-    fabric: "100% Cotton",
-    category: "Anime Tees",
-    images: ["/mockups/kakashi-1.jpg", "/mockups/kakashi-2.jpg"],
-    createdAt: "2025-09-14T16:40:00Z",
-    updatedAt: "2025-09-14T19:00:00Z",
-  },
-];
-
 export function ProductsSection() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,7 +58,8 @@ export function ProductsSection() {
     const loadProducts = async () => {
       try {
         setLoading(true);
-        const data = Product; // Replace with actual fetch call if needed
+        const res = await fetch("/api/products");
+        const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
@@ -115,7 +68,6 @@ export function ProductsSection() {
         setLoading(false);
       }
     };
-
     loadProducts();
   }, []);
 
