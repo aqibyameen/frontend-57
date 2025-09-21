@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react"
+import Image from "next/image"
 
 export function Footer() {
   return (
@@ -13,10 +14,8 @@ export function Footer() {
           {/* Brand Section */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">T</span>
-              </div>
-              <span className="font-bold text-xl text-foreground">TeeVibe</span>
+            
+              <Image src="./logo.png" alt="logo" width={150} height={80} className="font-bold text-xl text-foreground" / >
             </div>
             <p className="text-muted-foreground text-sm text-pretty">
               Premium quality t-shirts with unique designs. Express your personality with our curated collections of

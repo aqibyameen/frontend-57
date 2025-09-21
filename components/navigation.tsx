@@ -48,9 +48,9 @@ export function Navigation() {
             {/* Logo - Always show logo with text on all devices */}
             <Link
               href="/"
-              className="flex items-center space-x-2 flex-shrink-0"
+              className="flex items-center p-5 space-x-2 flex-shrink-0"
             >
-              <Image src="./logo.png" alt="logo" width={200} height={120} />
+              <Image src="./logo.png" alt="logo" width={140} height={70} />
             </Link>
 
             {/* Desktop Navigation */}

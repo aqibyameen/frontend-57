@@ -98,17 +98,16 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+    <Dialog open={isOpen}   onOpenChange={onClose}>
+      <DialogContent className="w-full max-h-[90vh]  p-0" >
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="sr-only">{product.name}</DialogTitle>
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-4 top-4 z-10"
+            className="absolute h-6 w-6 right-3 top-3 hover:bg-muted"
             onClick={onClose}
           >
-            <X className="h-4 w-4" />
           </Button>
         </DialogHeader>
 
