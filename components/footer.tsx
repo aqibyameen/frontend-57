@@ -1,3 +1,4 @@
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -5,13 +6,18 @@ import { Separator } from "@/components/ui/separator"
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react"
 import Image from "next/image"
 
+
 export function Footer() {
   return (
     <footer className="bg-muted/50 border-t">
       <div className="container mx-auto px-4">
-        {/* Main Footer Content */}
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Main Footer */}
+        <div className="py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {/* Brand Section */}
+
+          <div className="space-y-2 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start">
+
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
             
@@ -50,23 +56,30 @@ export function Footer() {
               <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Contact
               </Link>
+
               <Link
-                href="/size-guide"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                href="/"
+                className="flex items-center flex-shrink-0 w-1/3 md:w-[30%]" // 30% width
               >
-                Size Guide
+                <Image
+                  src="/logo.png"
+                  alt="NextGenWear Logo"
+                  width={400}
+                  height={200}
+                  className="w-full h-auto object-contain"
+                  priority
+                />
               </Link>
-              <Link href="/shipping" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Shipping Info
-              </Link>
-              <Link href="/returns" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Returns & Exchanges
-              </Link>
-            </nav>
+            </div>
+
+            <p className="text-sm text-muted-foreground mt-2">
+              Premium quality t-shirts with unique designs. Express your
+              personality with our curated collections.
+            </p>
           </div>
 
           {/* Categories */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <h3 className="font-semibold text-foreground">Categories</h3>
             <nav className="flex flex-col space-y-2">
               <Link
@@ -88,85 +101,47 @@ export function Footer() {
                 Streetwear
               </Link>
               <Link
-                href="/category/minimalist"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Minimalist
-              </Link>
-              <Link
                 href="/category/oversized"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Oversized
               </Link>
-              <Link
-                href="/category/trending"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Trending
-              </Link>
             </nav>
           </div>
 
-          {/* Newsletter & Contact */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Stay Connected</h3>
-            <p className="text-sm text-muted-foreground">
-              Subscribe to get updates on new arrivals and exclusive offers.
-            </p>
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <Input type="email" placeholder="Enter your email" className="flex-1 bg-background" />
-                <Button size="sm">Subscribe</Button>
-              </div>
-            </div>
-
-            <div className="space-y-2 pt-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          {/* Contact */}
+          <div className="space-y-4 text-center md:text-left">
+            <h3 className="font-semibold text-foreground">Contact</h3>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center md:justify-start gap-2">
                 <Mail className="h-4 w-4" />
-                <span>support@teevibe.com</span>
+                <span>nextgenwear@gmail.com</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center md:justify-start gap-2">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+92 346 8345809</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center md:justify-start gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>San Francisco, CA</span>
+                <span>Karachi, Pakistan</span>
               </div>
             </div>
           </div>
         </div>
 
-        <Separator />
-
         {/* Bottom Footer */}
-        <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-muted-foreground">
-            <span>© 2025 TeeVibe. All rights reserved.</span>
-            <div className="flex items-center gap-4">
-              <Link href="/privacy" className="hover:text-foreground transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="hover:text-foreground transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/cookies" className="hover:text-foreground transition-colors">
-                Cookie Policy
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>Secure payments powered by</span>
-            <div className="flex items-center gap-2">
-              <div className="px-2 py-1 bg-background rounded text-xs font-medium">VISA</div>
-              <div className="px-2 py-1 bg-background rounded text-xs font-medium">MC</div>
-              <div className="px-2 py-1 bg-background rounded text-xs font-medium">AMEX</div>
-            </div>
+        <div className="border-t py-4 flex flex-col md:flex-row items-center justify-between text-sm text-muted-foreground gap-2">
+          <span>© 2025 NextGenWear. All rights reserved.</span>
+          <div className="flex gap-4">
+            <Link href="#" className="hover:text-foreground transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="hover:text-foreground transition-colors">
+              Terms of Service
+            </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
