@@ -96,7 +96,6 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
   };
 
   return (
-<<<<<<< HEAD
     <Dialog open={isOpen} onOpenChange={onClose}>
       {/* allow full width dialog content; inner container will control responsive width */}
       <DialogContent className="max-w-none w-full p-0">
@@ -116,20 +115,6 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
               <X className="h-5 w-5" />
             </Button>
           </DialogHeader>
-=======
-    <Dialog open={isOpen}   onOpenChange={onClose}>
-      <DialogContent className="w-full max-h-[90vh]  p-0" >
-        <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="sr-only">{product.name}</DialogTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute h-6 w-6 right-3 top-3 hover:bg-muted"
-            onClick={onClose}
-          >
-          </Button>
-        </DialogHeader>
->>>>>>> 44588840a5ca5fe25f7ee395e9488dbc3b2a8a99
 
           {/* content padding is responsive */}
           <div className="p-4 sm:p-6">
