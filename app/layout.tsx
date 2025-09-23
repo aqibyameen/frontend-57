@@ -7,6 +7,9 @@ import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { CartProvider } from "@/lib/cart-store";
 import "./globals.css";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
+import { toast, Toaster } from "sonner";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -39,8 +42,12 @@ export default function RootLayout({
       <body
         className={`font-sans antialiased ${workSans.variable} ${openSans.variable}`}
       >
+        {/* ✅ Wrap the whole app */}
         <CartProvider>
+          <Navigation />
+          <Toaster position="top-right" richColors />
           <Suspense fallback={<p>Loading...</p>}>{children}</Suspense>
+          <Footer />
         </CartProvider>
         <Analytics />
       </body>
