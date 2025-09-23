@@ -97,11 +97,11 @@ function CartItem({
 
           <div className="text-right">
             <div className="font-semibold">
-              ${((discountPrice || price) * quantity).toLocaleString()}
+              PKR{((discountPrice || price) * quantity).toLocaleString()}
             </div>
             {discountPrice && (
               <div className="text-xs text-muted-foreground line-through">
-                ${(price * quantity).toLocaleString()}
+                PKR{(price * quantity).toLocaleString()}
               </div>
             )}
           </div>
