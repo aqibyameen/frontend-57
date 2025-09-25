@@ -10,7 +10,6 @@ export async function POST(req: Request) {
     await connectDB();
     const { email, password } = await req.json();
 
-
     const user = await User.findOne({ email });
 
     if (!user) {
