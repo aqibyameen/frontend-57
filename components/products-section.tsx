@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Grid, List } from "lucide-react";
 
 interface Product {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   sizes: string[];
@@ -302,7 +302,7 @@ export function ProductsSection() {
           >
             {filteredProducts.map((product) => (
               <ProductCard
-                key={product.id}
+                key={product._id}
                 product={product}
                 onProductClick={handleProductClick}
               />

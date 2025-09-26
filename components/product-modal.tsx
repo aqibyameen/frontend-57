@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { useCart, useCartActions } from "@/lib/cart-store";
 
 interface Product {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   sizes: string[];
@@ -58,7 +58,7 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
       )
     : 0;
 
-  const isInWishlist = state.wishlist.some((item) => item.id === product.id);
+  const isInWishlist = state.wishlist.some((item) => item.id === product._id);
 
   const handleQuantityChange = (delta: number) => {
     setQuantity(Math.max(1, quantity + delta));
@@ -69,9 +69,10 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
       // In a real app, you'd show an error message
       return;
     }
+    console.log(product._id)
 
     addToCart({
-      id: product.id,
+      id: product._id,
       name: product.name,
       price: product.price,
       discountPrice: product.discountPrice,
@@ -84,10 +85,10 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
 
   const handleWishlistToggle = () => {
     if (isInWishlist) {
-      removeFromWishlist(product.id);
+      removeFromWishlist(product._id);
     } else {
       addToWishlist({
-        id: product.id,
+        id: product._id,
         name: product.name,
         price: product.price,
         discountPrice: product.discountPrice,

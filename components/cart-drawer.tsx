@@ -1,34 +1,22 @@
-/** @format */
-
-"use client";
+"use client"
 
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, Plus, Minus, X, ShoppingBag } from "lucide-react";
-import { useCart, useCartActions } from "@/lib/cart-store";
-import Image from "next/image";
+} from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { ShoppingCart, Plus, Minus, X, ShoppingBag } from "lucide-react"
+import { useCart, useCartActions } from "@/lib/cart-store"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
 
-// Reusable Cart Item Component
-interface CartItemProps {
-  id: string;
-  name: string;
-  image?: string;
-  price: number;
-  discountPrice?: number;
-  quantity: number;
-  size: string;
-  color: string;
-  updateQuantity: (id: string, quantity: number) => void;
-  removeFromCart: (id: string) => void;
-}
-
+// ========================
+// Cart Item
+// ========================
 function CartItem({
   id,
   name,
@@ -40,7 +28,21 @@ function CartItem({
   color,
   updateQuantity,
   removeFromCart,
-}: CartItemProps) {
+}: {
+  id: string
+  name: string
+  image?: string
+  price: number
+  discountPrice?: number
+  quantity: number
+  size: string
+  color: string
+  updateQuantity: (id: string, quantity: number) => void
+  removeFromCart: (id: string) => void
+})
+{
+
+
   return (
     <div className="flex gap-4 p-4 border rounded-lg">
       <div className="relative w-16 h-16 rounded-md overflow-hidden bg-muted">
@@ -108,19 +110,23 @@ function CartItem({
         </div>
       </div>
     </div>
-  );
+  )
 }
 
+// ========================
 // Cart Drawer
+// ========================
 export function CartDrawer() {
-  const { state } = useCart();
-  const { updateQuantity, removeFromCart, setCartOpen } = useCartActions();
+  const router =useRouter()
+  const { state } = useCart()
+  const { updateQuantity, removeFromCart, setCartOpen, setCheckoutOpen } =
+    useCartActions()
 
   const subtotal = state.items.reduce(
     (sum, item) => sum + (item.discountPrice || item.price) * item.quantity,
     0
-  );
-  const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
+  )
+  const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <Sheet open={state.isCartOpen} onOpenChange={setCartOpen}>
@@ -169,7 +175,7 @@ export function CartDrawer() {
                       Subtotal ({totalItems}{" "}
                       {totalItems === 1 ? "item" : "items"})
                     </span>
-                    <span>${subtotal.toLocaleString()}</span>
+                    <span>PKR{subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-sm text-muted-foreground">
                     <span>Shipping</span>
@@ -178,12 +184,21 @@ export function CartDrawer() {
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">
                     <span>Total</span>
-                    <span>${subtotal.toLocaleString()}</span>
+                    <span>PKR{subtotal.toLocaleString()}</span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full" size="lg">
+                  <Button
+                    onClick={() => {
+                      setCartOpen(false)
+                      setCheckoutOpen(true)
+                      router.push('/checkout')
+
+                    }}
+                    className="w-full"
+                    size="lg"
+                  >
                     Proceed to Checkout
                   </Button>
                   <Button
@@ -200,5 +215,5 @@ export function CartDrawer() {
         </div>
       </SheetContent>
     </Sheet>
-  );
+  )
 }

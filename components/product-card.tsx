@@ -13,7 +13,7 @@ import { useCart, useCartActions } from "@/lib/cart-store";
 import { motion } from "framer-motion";
 
 interface Product {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   sizes: string[];
@@ -58,7 +58,7 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart({
-      id: product.id,
+      id: product._id,
       name: product.name,
       price: product.price,
       discountPrice: product.discountPrice,

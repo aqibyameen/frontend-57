@@ -63,40 +63,18 @@ export function Navigation() {
                   Home
                 </Link>
                 <Link
-                  href="/new-arrivals"
+                  href="/products"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
                 >
-                  New Arrivals
+                  Products
                 </Link>
                 <Link
-                  href="/trending"
+                  href="/orders"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
                 >
-                  Trending
+                  Orders
                 </Link>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="text-foreground hover:text-primary font-medium text-sm xl:text-base h-auto p-2"
-                    >
-                      Categories
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="center" className="w-48">
-                    {categories.map((category) => (
-                      <DropdownMenuItem key={category} asChild>
-                        <Link
-                          href={category === "Custom T-Shirts" ? "/custom-tshirt" : `/category/${category
-                            .toLowerCase()
-                            .replace(/\s+/g, "-")}`}
-                        >
-                          {category}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
@@ -263,18 +241,18 @@ export function Navigation() {
                     Home
                   </Link>
                   <Link
-                    href="/new-arrivals"
+                    href="/products"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    New Arrivals
+                    Products
                   </Link>
                   <Link
-                    href="/trending"
+                    href="/orders"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Trending
+                    Orders
                   </Link>
 
                   {/* Mobile Categories */}
@@ -297,6 +275,13 @@ export function Navigation() {
                       ))}
                     </div>
                   </div>
+                  <Link
+                    href="/reviews"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Reviews
+                  </Link>
 
                   <Link
                     href="/contact"
