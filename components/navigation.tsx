@@ -1,3 +1,5 @@
+/** @format */
+
 "use client";
 
 import { useState } from "react";
@@ -63,6 +65,7 @@ export function Navigation() {
                   Home
                 </Link>
                 <Link
+<<<<<<< HEAD
                   href="/products"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
                 >
@@ -75,6 +78,46 @@ export function Navigation() {
                   Orders
                 </Link>
                 
+=======
+                  href="/orders/"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
+                >
+                  Orders
+                </Link>
+                <Link
+                  href="/reviews"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
+                >
+                  Reviews
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-foreground hover:text-primary font-medium text-sm xl:text-base h-auto p-2"
+                    >
+                      Categories
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-48">
+                    {categories.map((category) => (
+                      <DropdownMenuItem key={category} asChild>
+                        <Link
+                          href={
+                            category === "Custom T-Shirts"
+                              ? "/custom-tshirt"
+                              : `/category/${category
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`
+                          }
+                        >
+                          {category}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+>>>>>>> 8c2ece0c7972e574ab576df47a5c2f913183a3c3
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
@@ -241,6 +284,7 @@ export function Navigation() {
                     Home
                   </Link>
                   <Link
+<<<<<<< HEAD
                     href="/products"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
@@ -253,6 +297,20 @@ export function Navigation() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Orders
+=======
+                    href="/order/"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Order
+                  </Link>
+                  <Link
+                    href="/reviews/"
+                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Reviews
+>>>>>>> 8c2ece0c7972e574ab576df47a5c2f913183a3c3
                   </Link>
 
                   {/* Mobile Categories */}
@@ -264,9 +322,13 @@ export function Navigation() {
                       {categories.map((category) => (
                         <Link
                           key={category}
-                          href={category === "Custom T-Shirts" ? "/custom-tshirt" : `/category/${category
-                            .toLowerCase()
-                            .replace(/\s+/g, "-")}`}
+                          href={
+                            category === "Custom T-Shirts"
+                              ? "/custom-tshirt"
+                              : `/category/${category
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`
+                          }
                           className="block text-foreground hover:text-primary hover:bg-muted/50 transition-all py-2 px-4 rounded-md text-sm"
                           onClick={() => setIsMenuOpen(false)}
                         >
@@ -328,7 +390,10 @@ export function Navigation() {
             className="flex flex-col items-center justify-center p-2 h-auto min-w-0 relative"
             onClick={toggleCart}
           >
-            <ShoppingBag className="h-8 w-8 text-muted-foreground" strokeWidth={2} />
+            <ShoppingBag
+              className="h-8 w-8 text-muted-foreground"
+              strokeWidth={2}
+            />
             {cartCount > 0 && (
               <Badge className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full p-0 flex items-center justify-center text-xs bg-primary">
                 {cartCount > 9 ? "9+" : cartCount}

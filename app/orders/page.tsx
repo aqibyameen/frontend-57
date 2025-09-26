@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client"
 
 import { useEffect, useState } from "react"
@@ -223,3 +224,14 @@ export default function OrdersPage() {
     </div>
   )
 }
+=======
+/** @format */
+
+import React from "react";
+
+const page = () => {
+  return <div>page</div>;
+};
+
+export default page;
+>>>>>>> 8c2ece0c7972e574ab576df47a5c2f913183a3c3

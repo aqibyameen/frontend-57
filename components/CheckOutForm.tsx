@@ -38,7 +38,7 @@ export default function CheckoutForm() {
   const total = subtotal + shipping;
 
   // STEP 1: Check localStorage
-  let finalUserOrderId = localStorage.getItem("userOrderId");
+  let finalUserOrderId  = localStorage.getItem("userOrderId");
 
   // STEP 2: If not in localStorage, verify from DB using email
   if (!finalUserOrderId && state.checkoutForm.email) {
@@ -48,7 +48,7 @@ export default function CheckoutForm() {
 
       if (data.success && data.userOrderId) {
         finalUserOrderId = data.userOrderId;
-        localStorage.setItem("userOrderId", finalUserOrderId);
+        localStorage.setItem("userOrderId", finalUserOrderId ?? "");
         
       } else {
         // STEP 3: No record in DB → generate new permanent userOrderId
