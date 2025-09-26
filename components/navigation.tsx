@@ -65,20 +65,6 @@ export function Navigation() {
                   Home
                 </Link>
                 <Link
-<<<<<<< HEAD
-                  href="/products"
-                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
-                >
-                  Products
-                </Link>
-                <Link
-                  href="/orders"
-                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
-                >
-                  Orders
-                </Link>
-                
-=======
                   href="/orders/"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
                 >
@@ -117,7 +103,6 @@ export function Navigation() {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
->>>>>>> 8c2ece0c7972e574ab576df47a5c2f913183a3c3
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
@@ -284,20 +269,6 @@ export function Navigation() {
                     Home
                   </Link>
                   <Link
-<<<<<<< HEAD
-                    href="/products"
-                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Products
-                  </Link>
-                  <Link
-                    href="/orders"
-                    className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Orders
-=======
                     href="/order/"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
@@ -310,7 +281,6 @@ export function Navigation() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Reviews
->>>>>>> 8c2ece0c7972e574ab576df47a5c2f913183a3c3
                   </Link>
 
                   {/* Mobile Categories */}
