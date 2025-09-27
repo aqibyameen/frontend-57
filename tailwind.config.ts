@@ -16,6 +16,13 @@ module.exports = {
         destructive: "rgb(239,68,68)", // red-500
       },
     },
+        screens: {
+          xs: "420px",   // ✅ custom breakpoint for 420px
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+    },
   },
   plugins: [],
 };

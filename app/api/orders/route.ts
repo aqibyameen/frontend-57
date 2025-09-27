@@ -1,36 +1,34 @@
-// app/api/orders/route.ts
+// src/app/api/orders/route.ts
 import { NextResponse } from "next/server"
-import Order from "@/models/Order"   // your order schema
 import { connectDB } from "@/lib/mongodb"
+import Order from "@/models/Order"
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   try {
     await connectDB()
-    const data = await req.json()
+    const { searchParams } = new URL(req.url)
+    const userOrderId = searchParams.get("userOrderId")
 
-    const order = await Order.create(data)
+    if (!userOrderId) {
+      return NextResponse.json({ error: "userOrderId required" }, { status: 400 })
+    }
 
-    return NextResponse.json({ success: true, order })
+    const orders = await Order.find({ userOrderId })
+    return NextResponse.json(orders)
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ success: false, error: "Failed to create order" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 })
   }
 }
 
-export async function GET(req: Request) {
-  await connectDB()
-  const { searchParams } = new URL(req.url)
-  const email = searchParams.get("email")
-  const userOrderId = searchParams.get("userOrderId")
+// 🔹 Add this POST method
+export async function POST(req: Request) {
+  try {
+    await connectDB()
+    const body = await req.json()
+    const newOrder = await Order.create(body)
 
-  if (!email || !userOrderId) {
-    return NextResponse.json({ success: false, error: "Missing credentials" })
+    return NextResponse.json({ success: true, order: newOrder })
+  } catch (err) {
+    return NextResponse.json({ success: false, error: "Failed to save order" }, { status: 500 })
   }
-
-  const orders = await Order.find({ id: userOrderId })
-  if (!orders.length) {
-    return NextResponse.json({ success: false, error: "No orders found" })
-  }
-
-  return NextResponse.json({ success: true, orders })
 }

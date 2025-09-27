@@ -58,7 +58,9 @@ export function ProductsSection() {
     const loadProducts = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/products");
+        const res = await fetch("/api/products",{next:{
+          revalidate:60
+        }});
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
@@ -293,21 +295,22 @@ export function ProductsSection() {
             </Button>
           </div>
         ) : (
-          <div
-            className={`grid gap-6 ${
-              viewMode === "grid"
-                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                : "grid-cols-1"
-            }`}
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product._id}
-                product={product}
-                onProductClick={handleProductClick}
-              />
-            ))}
-          </div>
+         <div
+  className={`grid gap-6 ${
+    viewMode === "grid"
+      ? "grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      : "grid-cols-1"
+  }`}
+>
+  {filteredProducts.map((product) => (
+    <ProductCard
+      key={product._id}
+      product={product}
+      onProductClick={handleProductClick}
+    />
+  ))}
+</div>
+
         )}
       </div>
 

@@ -3,10 +3,14 @@
 import { useEffect, useState } from "react"
 import { useCart, useCartActions } from "@/lib/cart-store"
 import { v4 as uuid } from "uuid"
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 
 export default function CheckoutForm() {
   const { state } = useCart()
   const { updateCheckoutForm, placeOrder } = useCartActions()
+  const router = useRouter()
 
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "card">("cod")
   const [showModal, setShowModal] = useState(false)
@@ -97,12 +101,17 @@ export default function CheckoutForm() {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.error);
+    if(data.success){
+    toast.success("Order placed successfully! please check order page");
+    }
   } catch (err) {
     console.error("Failed to save order in DB:", err);
   }
 
   setOrderId(newOrder.id);
   setShowModal(true);
+  router.push("/orders")
+
 };
 
   return (

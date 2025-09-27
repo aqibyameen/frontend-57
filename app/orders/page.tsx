@@ -1,226 +1,102 @@
-
 "use client"
-
 import { useEffect, useState } from "react"
-import Image from "next/image"
 
 interface Order {
   id: string
-  items: any[]
-  subtotal: number
-  shipping: number
+  userOrderId: string
+  email: string
+  items: { name: string; price: number; quantity: number; image?: string }[]
   total: number
   status: string
-  paymentMethod: string
-  createdAt: string
 }
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
-  const [email, setEmail] = useState("")
-  const [userOrderId, setUserOrderId] = useState("")
-  const [step, setStep] = useState<"email" | "order" | "orders">("email")
-  const [error, setError] = useState("")
 
-  // ✅ Initial load: check localStorage
   useEffect(() => {
-    const userOrderId = localStorage.getItem("userOrderId")
+    const userOrderId = localStorage.getItem("userOrderId") // checkout ke baad save kar lena
     if (userOrderId) {
-      
-      fetchOrders( userOrderId)
+      fetch(`/api/orders?userOrderId=${userOrderId}`)
+        .then(res => res.json())
+        .then(data => {
+          setOrders(data)
+          setLoading(false)
+        })
     } else {
       setLoading(false)
     }
   }, [])
 
-  // ✅ Check customer by email
-  const checkCustomer = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-    try {
-      const res = await fetch(`/api/customers?email=${email}`)
-      const data = await res.json()
-
-      if (data.success && data.customer) {
-        setStep("order")
-      } else {
-        setError("Customer not found")
-      }
-    } catch {
-      setError("Failed to check customer")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // ✅ Fetch orders
-  const fetchOrders = async ( userOrderId: string) => {
-    setLoading(true)
-    setError("")
-    try {
-      const res = await fetch(`/api/orders?userOrderId=${userOrderId}`)
-      const data = await res.json()
-
-      if (data.success) {
-        setOrders(data.orders)
-        localStorage.setItem("userOrderId", userOrderId)
-        setStep("orders")
-      } else {
-        setError("Invalid Order ID or No orders found")
-      }
-    } catch {
-      setError("Failed to fetch orders")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleOrderSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || !userOrderId) return
-    fetchOrders( userOrderId)
-  }
-
-  // ✅ Loading state
   if (loading) {
-    return <p className="text-center py-10">Loading...</p>
-  }
-
-  // ✅ Step 1: Enter Email
-  if (step === "email") {
     return (
-      <div className="max-w-md mx-auto py-10">
-        <h2 className="text-xl font-bold mb-4">Enter Email</h2>
-        <form onSubmit={checkCustomer} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="w-full p-2 border rounded"
-          />
-          <button
-            type="submit"
-            className="w-full bg-black text-white py-2 rounded"
-          >
-            Continue
-          </button>
-        </form>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-      </div>
-    )
-  }
-
-  // ✅ Step 2: Enter Order ID
-  if (step === "order") {
-    return (
-      <div className="max-w-md mx-auto py-10">
-        <h2 className="text-xl font-bold mb-4">Enter Order ID</h2>
-        <form onSubmit={handleOrderSubmit} className="space-y-4">
-          <input
-            type="text"
-            value={userOrderId}
-            onChange={(e) => setUserOrderId(e.target.value)}
-            placeholder="Enter your Order ID"
-            className="w-full p-2 border rounded"
-          />
-          <button
-            type="submit"
-            className="w-full bg-black text-white py-2 rounded"
-          >
-            Fetch Orders
-          </button>
-        </form>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-      </div>
-    )
-  }
-
-  // ✅ Step 3: Orders found or not
-  if (step === "orders" && orders.length === 0) {
-    return (
-      <div className="text-center py-10">
-        <h2 className="text-xl font-bold">No orders found</h2>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 space-y-8">
-      <h1 className="text-2xl font-bold">My Orders</h1>
-      {orders.map((order) => (
-        <div
-          key={order.id}
-          className="border rounded-xl shadow p-6 space-y-4 bg-white"
-        >
-          {/* Order header */}
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="font-semibold text-lg">
-                Order #{order.id.slice(0, 8)}
-              </h2>
-              <p className="text-sm text-gray-500">
-                Placed on {new Date(order.createdAt).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-500">
-                Payment:{" "}
-                {order.paymentMethod === "cod"
-                  ? "Cash on Delivery"
-                  : "Credit/Debit"}
-              </p>
-            </div>
-            <span className="px-3 py-1 text-sm rounded-lg bg-gray-200">
-              {order.status}
-            </span>
-          </div>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
-          {/* Items */}
-          <div className="space-y-3">
-            {order.items.map((item) => (
-              <div
-                key={`${item.id}-${item.size}-${item.color}`}
-                className="flex justify-between items-center border p-3 rounded-lg"
-              >
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={item.image ?? "/placeholder.png"}
-                    alt={item.name}
-                    width={60}
-                    height={60}
-                    className="rounded-lg object-cover"
-                  />
-                  <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {item.size} • {item.color}
-                    </p>
-                    <p className="text-sm">
-                      Qty: {item.quantity} × PKR{" "}
-                      {item.discountPrice ?? item.price}
-                    </p>
-                  </div>
+      {orders.length === 0 ? (
+        <p className="text-gray-500">No orders found.</p>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
+          {orders.map(order => (
+            <div
+              key={order.id}
+              className="border rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition"
+            >
+              <p className="text-sm text-gray-500">Order ID: {order.userOrderId}</p>
+              <p className="mt-1">
+                <span className="font-semibold">Status:</span>{" "}
+                <span
+                  className={`${
+                    order.status === "pending" ? "text-yellow-600" : "text-green-600"
+                  } font-medium`}
+                >
+                  {order.status}
+                </span>
+              </p>
+              <p>
+                <span className="font-semibold">Total:</span> Rs {order.total}
+              </p>
+
+              <div className="mt-4">
+                <h2 className="font-semibold mb-2">Items:</h2>
+                <div className="space-y-3">
+                  {order.items.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 border p-2 rounded-lg bg-gray-50"
+                    >
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded-lg"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+                          No Img
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-sm text-gray-500">
+                          {item.quantity} × Rs {item.price}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <p className="font-semibold">
-                  PKR {(item.discountPrice ?? item.price) * item.quantity}
-                </p>
               </div>
-            ))}
-          </div>
-
-          {/* Totals */}
-          <div className="border-t pt-4 space-y-1 text-right">
-            <p className="text-sm text-gray-600">
-              Subtotal: PKR {order.subtotal}
-            </p>
-            <p className="text-sm text-gray-600">
-              Shipping: PKR {order.shipping}
-            </p>
-            <p className="text-lg font-bold">Total: PKR {order.total}</p>
-          </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   )
 }

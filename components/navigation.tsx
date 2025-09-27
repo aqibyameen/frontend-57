@@ -65,7 +65,7 @@ export function Navigation() {
                   Home
                 </Link>
                 <Link
-                  href="/orders/"
+                  href="/orders"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base whitespace-nowrap"
                 >
                   Orders
@@ -269,7 +269,7 @@ export function Navigation() {
                     Home
                   </Link>
                   <Link
-                    href="/order/"
+                    href="/orders"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
