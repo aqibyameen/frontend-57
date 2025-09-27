@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center text-white overflow-hidden">
+    <section className="relative w-full min-h-screen flex items-center justify-center bg-black text-white overflow-hidden">
       {/* Background gradients */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
       <div className="absolute inset-0 bg-gradient-to-tr from-gray-800/40 via-slate-600/20 to-gray-700/30"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/30 to-black/80"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-300/5 to-transparent"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-400/10 via-transparent to-gray-500/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-400/10 via-transparent to-gray-500/10"></div> */}
 
       {/* Subtle background image overlay */}
       <div
-        className="absolute inset-0 opacity-5 mix-blend-overlay"
+        className="absolute inset-0  mix-blend-overlay"
         style={{
-          backgroundImage: `url("./ka-fr-he.png")`,
+          backgroundImage: `url("./background.jpg")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -102,21 +102,24 @@ export default function HeroSection() {
           >
             <div className="relative ml-0 sm:ml-12 lg:ml-[120px]">
               {/* Models Image */}
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-              >
-                <Image
-                  src="./ka-bk-he.png"
-                  alt="Models wearing Kakashi anime t-shirts"
-                  width={450}
-                  height={600}
-                  className="w-40 sm:w-56 md:w-72 lg:w-96 xl:w-[450px] rounded-lg object-contain drop-shadow-2xl"
-                  priority
-                />
-              </motion.div>
+          <motion.div
+  initial={{ scale: 0.9, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ duration: 1, delay: 0.6 }}
+  className="relative"
+>
+  <Image
+    src="./ka-bk-he.png"
+    alt="Models wearing Kakashi anime t-shirts"
+    width={450}
+    height={600}
+    className="w-40 sm:w-56 md:w-72 lg:w-96 xl:w-[450px] rounded-lg object-contain drop-shadow-2xl"
+    priority
+  />
+    <div className="absolute inset-0 bg-gray-950/20 rounded-lg"></div>
 
+  {/* 🔹 Overlay Layer */}
+</motion.div>
               {/* Floating Kakashi */}
               <motion.div
                 className=" sm:block absolute -bottom-10 -left-16 lg:-left-24"
@@ -124,15 +127,22 @@ export default function HeroSection() {
                 transition={{ duration: 3, repeat: Infinity }}
               >
                 <div className="relative">
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl scale-150"></div>
-                  <Image
-                    src="./ka-fr-he.png"
-                    alt="Kakashi character"
-                    width={200}
-                    height={200}
-                    className="relative z-10 w-20 sm:w-28 md:w-36 lg:w-44 xl:w-48 object-contain"
-                  />
-                </div>
+  {/* Glow effect behind image */}
+  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl scale-150"></div>
+
+  {/* Overlayed Image */}
+  <div className="relative z-10">
+    <Image
+      src="./ka-fr-he.png"
+      alt="Kakashi character"
+      width={200}
+      height={200}
+      className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-48  object-contain"
+    />
+    {/* 🔹 Overlay Layer */}
+    <div className="absolute inset-0 bg-black/40 rounded-lg"></div>
+  </div>
+</div>
               </motion.div>
             </div>
           </motion.div>
