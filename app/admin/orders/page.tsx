@@ -52,7 +52,7 @@ export default function AdminOrders() {
 
   const handleStatusChange = async (id: string, status: string) => {
     try {
-      const res = await fetch("/api/orders", {
+      const res = await fetch("/api/admin/order", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status }),

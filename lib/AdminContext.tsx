@@ -76,12 +76,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const fetchOrders = async () => {
     setLoadingOrders(true);
     try {
-      const userOrderId = localStorage.getItem("userOrderId");
-      if (!userOrderId) {
-        setOrders([]);
-        return;
-      }
-      const res = await fetch(`/api/orders?userOrderId=${userOrderId}`);
+      const res = await fetch(`/api/admin/order`);
       const data = await res.json();
       setOrders(Array.isArray(data) ? data : data.orders ?? []);
     } catch (err) {
