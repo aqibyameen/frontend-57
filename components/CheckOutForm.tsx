@@ -60,16 +60,6 @@ export default function CheckoutForm() {
           // STEP 3: No record in DB → generate new permanent userOrderId
           finalUserOrderId = uuid();
           localStorage.setItem("userOrderId", finalUserOrderId);
-
-          // Save customer record in DB
-          await fetch("/api/customers", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: state.checkoutForm.email,
-              userOrderId: finalUserOrderId,
-            }),
-          });
         }
       } catch (err) {
         console.error("Failed to check/create userOrderId:", err);
@@ -78,7 +68,6 @@ export default function CheckoutForm() {
       }
     }
 
-    // ✅ Now finalUserOrderId is guaranteed
     const newOrder = {
       id: uuid(), // unique per-order id
       userOrderId: finalUserOrderId,
@@ -112,6 +101,14 @@ export default function CheckoutForm() {
 
     setOrderId(newOrder.id);
     setShowModal(true);
+    await fetch("/api/customers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: state.checkoutForm.email,
+        userOrderId: finalUserOrderId,
+      }),
+    });
     await refreshOrders();
     router.push("/orders");
   };
