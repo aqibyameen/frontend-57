@@ -29,6 +29,9 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: "NXTGEN Wears Premium T-Shirt Store",
+  icons:{
+    icon:"./logo.png"
+  },
   description:
     "Discover premium quality t-shirts from anime, gaming, and streetwear collections",
 };
