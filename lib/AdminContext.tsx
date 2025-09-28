@@ -50,9 +50,35 @@ interface Customer {
   createdAt: string;
 }
 
+interface OrderUser {
+  _id: string;
+  userOrderId: string;
+  email: string;
+  total: number;
+  status: "pending" | "dispatch" | "delivered";
+  paymentMethod: string;
+  createdAt: string;
+  form: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+  items: {
+    name: string;
+    price: number;
+    discountPrice?: number;
+    quantity: number;
+    size?: string;
+    color?: string;
+    image?: string;
+  }[];
+}
+
 interface AdminContextType {
   orders: Order[];
   customers: Customer[];
+  userOrder: OrderUser[];
   products: Product[];
   loadingOrders: boolean;
   loadingCustomers: boolean;
@@ -60,6 +86,7 @@ interface AdminContextType {
   refreshOrders: () => Promise<void>;
   refreshCustomers: () => Promise<void>;
   refreshProducts: () => Promise<void>;
+  refreshOrdersByID: () => Promise<void>;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -68,6 +95,8 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [userOrder, setUserOrder] = useState<OrderUser[]>([]);
+
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [loadingCustomers, setLoadingCustomers] = useState(false);
   const [loadingProducts, setLoadingProducts] = useState(false);
@@ -83,6 +112,20 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       console.error("Failed to fetch orders:", err);
     } finally {
       setLoadingOrders(false);
+    }
+  };
+
+  // fetch order by ID (userOrderId stored in localStorage)
+  const fetchOrderByID = async () => {
+    const userOrderId = localStorage.getItem("userOrderId");
+    if (!userOrderId) return;
+
+    try {
+      const res = await fetch(`/api/orders/${userOrderId}`);
+      const data = await res.json();
+      setUserOrder(Array.isArray(data) ? data : data.orders ?? []);
+    } catch (err) {
+      console.error("Failed to fetch user order:", err);
     }
   };
 
@@ -119,6 +162,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     fetchOrders();
     fetchCustomers();
     fetchProducts();
+    fetchOrderByID();
   }, []);
 
   return (
@@ -127,12 +171,14 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
         orders,
         customers,
         products,
+        userOrder,
         loadingCustomers,
         loadingOrders,
         loadingProducts,
         refreshOrders: fetchOrders,
         refreshCustomers: fetchCustomers,
         refreshProducts: fetchProducts,
+        refreshOrdersByID: fetchOrderByID,
       }}
     >
       {children}

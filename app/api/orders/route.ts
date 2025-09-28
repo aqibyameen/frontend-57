@@ -9,6 +9,7 @@ export async function GET(req: Request) {
     await connectDB();
     const { searchParams } = new URL(req.url);
     const userOrderId = searchParams.get("userOrderId");
+    console.log(userOrderId);
 
     if (!userOrderId) {
       return NextResponse.json(

@@ -4,7 +4,7 @@
 import { useAdmin } from "@/lib/AdminContext";
 
 export default function OrdersPage() {
-  const { orders, loadingOrders, refreshOrders } = useAdmin(); // ✅ get loadingOrders from context
+  const { userOrder, loadingOrders } = useAdmin();
 
   if (loadingOrders) {
     return (
@@ -13,7 +13,7 @@ export default function OrdersPage() {
       </div>
     );
   }
-
+  const orders = userOrder;
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
