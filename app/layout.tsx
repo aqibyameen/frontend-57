@@ -28,7 +28,7 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "TeeVibe - Premium T-Shirt Store",
+  title: "NXTGEN Wears Premium T-Shirt Store",
   description:
     "Discover premium quality t-shirts from anime, gaming, and streetwear collections",
 };
