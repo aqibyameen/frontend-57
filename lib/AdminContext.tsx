@@ -133,7 +133,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const fetchCustomers = async () => {
     setLoadingCustomers(true);
     try {
-      const res = await fetch(`/api/customers`);
+      const res = await fetch(`/api/customers/get-all`);
       const data = await res.json();
       setCustomers(Array.isArray(data) ? data : data.customers ?? []);
     } catch (err) {
