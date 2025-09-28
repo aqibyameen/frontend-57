@@ -4,6 +4,8 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { toast } from "sonner";
+import { useAdmin } from "@/lib/AdminContext";
 
 export default function AddProductModal({
   modalOpen,
@@ -14,6 +16,7 @@ export default function AddProductModal({
 }) {
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<File[]>([]);
+  const { refreshProducts } = useAdmin();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -40,7 +43,7 @@ export default function AddProductModal({
               e.preventDefault();
 
               if (images.length < 2) {
-                alert("⚠️ Please upload at least 2 images");
+                toast.warning("Please upload at least 2 images");
                 return;
               }
 
@@ -59,12 +62,13 @@ export default function AddProductModal({
               setLoading(false);
 
               if (res.ok) {
-                alert("✅ Product added!");
+                toast.success("Product added!");
                 form.reset();
                 setImages([]);
                 setModalOpen(false);
+                await refreshProducts();
               } else {
-                alert("❌ Failed to add product");
+                toast.error("Failed to add product");
               }
             }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-4"
