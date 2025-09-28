@@ -1,5 +1,7 @@
 /** @format */
 
+import { connectDB } from "@/lib/mongodb";
+import Customer from "@/models/Customer";
 import { NextResponse } from "next/server";
 
 interface Customer {
@@ -19,7 +21,7 @@ let customers: Customer[] = [];
 export async function POST(req: Request) {
   try {
     const { email, userOrderId } = await req.json();
-
+     await connectDB();
     if (!email || !userOrderId) {
       return NextResponse.json(
         { success: false, error: "Email and userOrderId are required" },
@@ -45,9 +47,11 @@ export async function POST(req: Request) {
     };
 
     customers.push(newCustomer);
+    const customer=await Customer.create({email,userOrderId});
+
 
     return NextResponse.json(
-      { success: true, customer: newCustomer },
+      { success: true, customer: customer },
       { status: 201 }
     );
   } catch (err) {
