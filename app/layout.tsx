@@ -1,15 +1,17 @@
 /** @format */
 
-import type React from "react";
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Work_Sans, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { CartProvider } from "@/lib/cart-store";
+// @ts-ignore: allow global CSS side-effect import (Next.js global stylesheet)
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
+import { AdminProvider } from "@/lib/AdminContext";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -29,24 +31,24 @@ export const metadata: Metadata = {
   title: "TeeVibe - Premium T-Shirt Store",
   description:
     "Discover premium quality t-shirts from anime, gaming, and streetwear collections",
-  generator: "v0.app",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`font-sans antialiased ${workSans.variable} ${openSans.variable}`}
       >
-        {/* ✅ Wrap the whole app */}
         <CartProvider>
           <Navigation />
           <Toaster position="top-right" richColors />
-          <Suspense fallback={<p>Loading...</p>}>{children}</Suspense>
+          <Suspense fallback={<p>Loading...</p>}>
+            <AdminProvider>{children}</AdminProvider>
+          </Suspense>
           <Footer />
         </CartProvider>
         <Analytics />

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Search, Grid, List } from "lucide-react";
+import { useAdmin } from "@/lib/AdminContext";
 
 interface Product {
   _id: string;
@@ -35,9 +36,9 @@ interface Product {
 export function ProductsSection() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products, loadingProducts } = useAdmin();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedGender, setSelectedGender] = useState<string>("all");
@@ -53,25 +54,6 @@ export function ProductsSection() {
     setIsModalOpen(false);
     setSelectedProduct(null);
   };
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/products",{next:{
-          revalidate:60
-        }});
-        const data = await res.json();
-        setProducts(data);
-        setFilteredProducts(data);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadProducts();
-  }, []);
 
   useEffect(() => {
     let filtered = products;
@@ -127,7 +109,7 @@ export function ProductsSection() {
   const categories = [...new Set(products.map((p) => p.category))];
   const genders = [...new Set(products.flatMap((p) => p.gender))];
 
-  if (loading) {
+  if (loadingProducts) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -295,22 +277,21 @@ export function ProductsSection() {
             </Button>
           </div>
         ) : (
-         <div
-  className={`grid gap-6 ${
-    viewMode === "grid"
-      ? "grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      : "grid-cols-1"
-  }`}
->
-  {filteredProducts.map((product) => (
-    <ProductCard
-      key={product._id}
-      product={product}
-      onProductClick={handleProductClick}
-    />
-  ))}
-</div>
-
+          <div
+            className={`grid gap-6 ${
+              viewMode === "grid"
+                ? "grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                : "grid-cols-1"
+            }`}
+          >
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                onProductClick={handleProductClick}
+              />
+            ))}
+          </div>
         )}
       </div>
 

@@ -1,39 +1,17 @@
-"use client"
-import { useEffect, useState } from "react"
+/** @format */
 
-interface Order {
-  id: string
-  userOrderId: string
-  email: string
-  items: { name: string; price: number; quantity: number; image?: string }[]
-  total: number
-  status: string
-}
+"use client";
+import { useAdmin } from "@/lib/AdminContext";
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [loading, setLoading] = useState(true)
+  const { orders, loadingOrders, refreshOrders } = useAdmin(); // ✅ get loadingOrders from context
 
-  useEffect(() => {
-    const userOrderId = localStorage.getItem("userOrderId") // checkout ke baad save kar lena
-    if (userOrderId) {
-      fetch(`/api/orders?userOrderId=${userOrderId}`)
-        .then(res => res.json())
-        .then(data => {
-          setOrders(data)
-          setLoading(false)
-        })
-    } else {
-      setLoading(false)
-    }
-  }, [])
-
-  if (loading) {
+  if (loadingOrders) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -44,17 +22,21 @@ export default function OrdersPage() {
         <p className="text-gray-500">No orders found.</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
-          {orders.map(order => (
+          {orders.map((order) => (
             <div
-              key={order.id}
+              key={order._id}
               className="border rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition"
             >
-              <p className="text-sm text-gray-500">Order ID: {order.userOrderId}</p>
+              <p className="text-sm text-gray-500">
+                Order ID: {order.userOrderId}
+              </p>
               <p className="mt-1">
                 <span className="font-semibold">Status:</span>{" "}
                 <span
                   className={`${
-                    order.status === "pending" ? "text-yellow-600" : "text-green-600"
+                    order.status === "pending"
+                      ? "text-yellow-600"
+                      : "text-green-600"
                   } font-medium`}
                 >
                   {order.status}
@@ -64,6 +46,7 @@ export default function OrdersPage() {
                 <span className="font-semibold">Total:</span> Rs {order.total}
               </p>
 
+              {/* Items Section */}
               <div className="mt-4">
                 <h2 className="font-semibold mb-2">Items:</h2>
                 <div className="space-y-3">
@@ -98,5 +81,5 @@ export default function OrdersPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,118 +1,120 @@
-"use client"
+/** @format */
 
-import { useEffect, useState } from "react"
-import { useCart, useCartActions } from "@/lib/cart-store"
-import { v4 as uuid } from "uuid"
+"use client";
+
+import { useEffect, useState } from "react";
+import { useCart, useCartActions } from "@/lib/cart-store";
+import { v4 as uuid } from "uuid";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
+import { useAdmin } from "@/lib/AdminContext";
 
 export default function CheckoutForm() {
-  const { state } = useCart()
-  const { updateCheckoutForm, placeOrder } = useCartActions()
-  const router = useRouter()
+  const { state } = useCart();
+  const { updateCheckoutForm, placeOrder } = useCartActions();
+  const router = useRouter();
+  const { refreshOrders } = useAdmin();
 
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "card">("cod")
-  const [showModal, setShowModal] = useState(false)
-  const [orderId, setOrderId] = useState<string>("")
-  const [userOrderId, setUserOrderId] = useState<string>("")
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "card">("cod");
+  const [showModal, setShowModal] = useState(false);
+  const [orderId, setOrderId] = useState<string>("");
+  const [userOrderId, setUserOrderId] = useState<string>("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target
-    updateCheckoutForm({ [name]: value })
-
-    
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  if (state.items.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
-
-  const subtotal = state.items.reduce(
-    (sum, item) => sum + (item.discountPrice ?? item.price) * item.quantity,
-    0
-  );
-  const shipping = 250;
-  const total = subtotal + shipping;
-
-  // STEP 1: Check localStorage
-  let finalUserOrderId  = localStorage.getItem("userOrderId");
-
-  // STEP 2: If not in localStorage, verify from DB using email
-  if (!finalUserOrderId && state.checkoutForm.email) {
-    try {
-      const res = await fetch(`/api/customers?email=${state.checkoutForm.email}`);
-      const data = await res.json();
-
-      if (data.success && data.userOrderId) {
-        finalUserOrderId = data.userOrderId;
-        localStorage.setItem("userOrderId", finalUserOrderId ?? "");
-        
-      } else {
-        // STEP 3: No record in DB → generate new permanent userOrderId
-        finalUserOrderId = uuid();
-        localStorage.setItem("userOrderId", finalUserOrderId);
-
-        // Save customer record in DB
-        await fetch("/api/customers", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: state.checkoutForm.email,
-            userOrderId: finalUserOrderId,
-          }),
-        });
-      }
-    } catch (err) {
-      console.error("Failed to check/create userOrderId:", err);
-      alert("Something went wrong while verifying your customer ID.");
-      return;
-    }
-  }
-
-  // ✅ Now finalUserOrderId is guaranteed
-  const newOrder = {
-    id: uuid(), // unique per-order id
-    userOrderId: finalUserOrderId,
-    email: state.checkoutForm.email,
-    items: state.items,
-    subtotal,
-    shipping,
-    total,
-    status: "pending",
-    form: state.checkoutForm,
-    createdAt: new Date().toISOString(),
-    paymentMethod,
+    const { name, value } = e.target;
+    updateCheckoutForm({ [name]: value });
   };
 
-  placeOrder(newOrder);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newOrder),
-    });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.error);
-    if(data.success){
-    toast.success("Order placed successfully! please check order page");
+    if (state.items.length === 0) {
+      alert("Your cart is empty!");
+      return;
     }
-  } catch (err) {
-    console.error("Failed to save order in DB:", err);
-  }
 
-  setOrderId(newOrder.id);
-  setShowModal(true);
-  router.push("/orders")
+    const subtotal = state.items.reduce(
+      (sum, item) => sum + (item.discountPrice ?? item.price) * item.quantity,
+      0
+    );
+    const shipping = 250;
+    const total = subtotal + shipping;
 
-};
+    // STEP 1: Check localStorage
+    let finalUserOrderId = localStorage.getItem("userOrderId");
+
+    // STEP 2: If not in localStorage, verify from DB using email
+    if (!finalUserOrderId && state.checkoutForm.email) {
+      try {
+        const res = await fetch(
+          `/api/customers?email=${state.checkoutForm.email}`
+        );
+        const data = await res.json();
+
+        if (data.success && data.userOrderId) {
+          finalUserOrderId = data.userOrderId;
+          localStorage.setItem("userOrderId", finalUserOrderId ?? "");
+        } else {
+          // STEP 3: No record in DB → generate new permanent userOrderId
+          finalUserOrderId = uuid();
+          localStorage.setItem("userOrderId", finalUserOrderId);
+
+          // Save customer record in DB
+          await fetch("/api/customers", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: state.checkoutForm.email,
+              userOrderId: finalUserOrderId,
+            }),
+          });
+        }
+      } catch (err) {
+        console.error("Failed to check/create userOrderId:", err);
+        alert("Something went wrong while verifying your customer ID.");
+        return;
+      }
+    }
+
+    // ✅ Now finalUserOrderId is guaranteed
+    const newOrder = {
+      id: uuid(), // unique per-order id
+      userOrderId: finalUserOrderId,
+      email: state.checkoutForm.email,
+      items: state.items,
+      subtotal,
+      shipping,
+      total,
+      status: "pending",
+      form: state.checkoutForm,
+      createdAt: new Date().toISOString(),
+      paymentMethod,
+    };
+
+    placeOrder(newOrder);
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newOrder),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      if (data.success) {
+        toast.success("Order placed successfully! please check order page");
+      }
+    } catch (err) {
+      console.error("Failed to save order in DB:", err);
+    }
+
+    setOrderId(newOrder.id);
+    setShowModal(true);
+    await refreshOrders();
+    router.push("/orders");
+  };
 
   return (
     <>
@@ -190,8 +192,10 @@ export default function CheckoutForm() {
         {/* Order Summary */}
         <div className="border-t pt-4 space-y-1 text-right">
           <p className="text-sm text-gray-600">
-            Subtotal: PKR {state.items.reduce(
-              (sum, item) => sum + (item.discountPrice ?? item.price) * item.quantity,
+            Subtotal: PKR{" "}
+            {state.items.reduce(
+              (sum, item) =>
+                sum + (item.discountPrice ?? item.price) * item.quantity,
               0
             )}
           </p>
@@ -199,7 +203,8 @@ export default function CheckoutForm() {
           <p className="text-lg font-bold">
             Total: PKR{" "}
             {state.items.reduce(
-              (sum, item) => sum + (item.discountPrice ?? item.price) * item.quantity,
+              (sum, item) =>
+                sum + (item.discountPrice ?? item.price) * item.quantity,
               0
             ) + 250}
           </p>
@@ -233,8 +238,10 @@ export default function CheckoutForm() {
 
             <button
               onClick={() => {
-                navigator.clipboard.writeText(`User ID: ${userOrderId}, Order ID: ${orderId}`)
-                alert("Copied to clipboard ✅")
+                navigator.clipboard.writeText(
+                  `User ID: ${userOrderId}, Order ID: ${orderId}`
+                );
+                alert("Copied to clipboard ✅");
               }}
               className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800"
             >
@@ -255,5 +262,5 @@ export default function CheckoutForm() {
         </div>
       )}
     </>
-  )
+  );
 }

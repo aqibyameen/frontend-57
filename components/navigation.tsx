@@ -47,12 +47,16 @@ export function Navigation() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex h-14 sm:h-16 items-center justify-between gap-4 lg:gap-8">
-            {/* Logo - Always show logo with text on all devices */}
             <Link
               href="/"
               className="flex items-center p-5 space-x-2 flex-shrink-0"
             >
-              <Image src="./logo.png" alt="logo" width={140} height={70} />
+              <Image
+                src="/logo.png"
+                alt="nextgenwear"
+                width={140}
+                height={70}
+              />
             </Link>
 
             {/* Desktop Navigation */}
