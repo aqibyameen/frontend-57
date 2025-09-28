@@ -2,9 +2,13 @@
 
 "use client";
 import { useAdmin } from "@/lib/AdminContext";
+import { useEffect } from "react";
 
 export default function OrdersPage() {
-  const { userOrder, loadingOrders } = useAdmin();
+  const { userOrder, loadingOrders, refreshOrdersByID } = useAdmin();
+  useEffect(() => {
+    refreshOrdersByID();
+  }, []);
 
   if (loadingOrders) {
     return (

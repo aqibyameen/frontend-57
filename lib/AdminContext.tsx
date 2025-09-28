@@ -121,7 +121,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     if (!userOrderId) return;
 
     try {
-      const res = await fetch(`/api/orders/${userOrderId}`);
+      const res = await fetch(`/api/orders?userOrderId=${userOrderId}`);
       const data = await res.json();
       setUserOrder(Array.isArray(data) ? data : data.orders ?? []);
     } catch (err) {
