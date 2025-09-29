@@ -130,7 +130,7 @@ export function ProductsSection() {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8">
+      <div className=" px-5 mx-auto  py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Our Products</h1>
@@ -278,9 +278,9 @@ export function ProductsSection() {
           </div>
         ) : (
           <div
-            className={`grid gap-6 ${
+            className={`grid gap-3 xss:gap-3 sm:gap-3 md:gap-6  ${
               viewMode === "grid"
-                ? "grid-cols-2 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                ? "grid-cols-1 xss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
                 : "grid-cols-1"
             }`}
           >

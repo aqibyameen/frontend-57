@@ -4,6 +4,10 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@theme{
+  --breakpoint-xss: 460px;
+  --breakpoint-sx:450px
+}
 
 :root {
   --background: #ffffff;

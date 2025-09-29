@@ -6,7 +6,7 @@ import type React from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ArrowRight, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useCart, useCartActions } from "@/lib/cart-store";
@@ -84,7 +84,7 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
     boxShadow: "0px 10px 25px rgba(0,0,0,0.15)",
   }}
   transition={{ duration: 0.25, ease: "easeOut" }}
-  className="w-full aspect-[1/2] max-h-[450px]"
+  className="w-5/6 mx-auto xss:w-full sm:w-full  h-[400px] sxs:h-[400px] sm:h-[450px]  "
 >
   <Card className="group cursor-pointer flex flex-col h-full shadow-md transition-all duration-300">
     {/* Image Section */}
@@ -132,14 +132,14 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
 
 
     <CardFooter className="p-2 mb-2 sm:p-3 pt-0 ">
-  <div className="flex gap-1.5 sm:gap-2 w-full">
+  <div className="flex flex-col  gap-1.5 sm:gap-2 w-full sm:flex-col">
     <Button
       className="flex-1 py-2 xs:py-1 sm:py-1 text-xs sm:text-sm"
       size="sm"
       onClick={handleAddToCart}
     >
       <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-      Add
+      Add to cart
     </Button>
     <Button
       className="flex-1 py-1.5 sm:py-1 text-xs sm:text-sm bg-transparent"
@@ -150,7 +150,10 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
         handleAddToCart(e,true);
       }}
     >
-      Buy
+      
+      Buy Now
+       <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+
     </Button>
   </div>
 </CardFooter>
