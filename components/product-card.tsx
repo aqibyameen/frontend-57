@@ -120,11 +120,11 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
 
   <div className="flex items-center justify-between mt-1 sm:mt-2">
     <span className="font-bold text-sm sm:text-base">
-      ${displayPrice?.toLocaleString()}
+      PKR {displayPrice?.toLocaleString()}
     </span>
     {hasDiscount && (
       <span className="text-[10px] sm:text-xs text-muted-foreground line-through">
-        ${product.price.toLocaleString()}
+        PKR {product.price.toLocaleString()}
       </span>
     )}
   </div>

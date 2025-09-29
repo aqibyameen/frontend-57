@@ -208,11 +208,11 @@ return (
 
                 <div className="flex items-center gap-3">
                   <span className="text-3xl font-bold">
-                    ${displayPrice?.toLocaleString()}
+                    PKR {displayPrice?.toLocaleString()}
                   </span>
                   {hasDiscount && (
                     <span className="text-lg text-muted-foreground line-through">
-                      ${product.price.toLocaleString()}
+                      PKR {product.price.toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -304,7 +304,7 @@ return (
               <div className="mt-4">
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
-                    className="flex-1"
+                    className="flex-1 py-2"
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={!selectedSize}
@@ -314,7 +314,7 @@ return (
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 py-2"
                     size="lg"
                     onClick={() => {
                       handleAddToCart()
