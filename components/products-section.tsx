@@ -112,14 +112,20 @@ export function ProductsSection() {
   if (loadingProducts) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Our Products</h1>
+          <p className="text-muted-foreground">
+            Discover our collection of premium products
+          </p>
+        </div>
+        <div className="grid gap-3 xss:gap-3 sm:gap-3 md:gap-6  grid-cols-1 xss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="bg-muted aspect-square rounded-lg mb-4"></div>
+              <div className="bg-gray-100 aspect-square rounded-lg mb-4"></div>
               <div className="space-y-2">
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-                <div className="h-3 bg-muted rounded w-1/2"></div>
-                <div className="h-6 bg-muted rounded w-1/4"></div>
+                <div className="h-4 bg-gray-100 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-100 rounded w-1/2"></div>
+                <div className="h-6 bg-gray-100 rounded w-1/4"></div>
               </div>
             </div>
           ))}
@@ -152,7 +158,7 @@ export function ProductsSection() {
               />
             </div>
 
-            <Select
+            {/* <Select
               value={selectedCategory}
               onValueChange={setSelectedCategory}
             >
@@ -193,9 +199,9 @@ export function ProductsSection() {
                 <SelectItem value="price-high">Price: High to Low</SelectItem>
                 <SelectItem value="newest">Newest First</SelectItem>
               </SelectContent>
-            </Select>
+            </Select> */}
 
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <Button
                 variant={viewMode === "grid" ? "default" : "outline"}
                 size="icon"
@@ -210,7 +216,7 @@ export function ProductsSection() {
               >
                 <List className="h-4 w-4" />
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Active Filters */}
