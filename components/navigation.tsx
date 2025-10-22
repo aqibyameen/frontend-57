@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCart, useCartActions } from "@/lib/cart-store";
 import { CartDrawer } from "./cart-drawer";
 import Image from "next/image";
+import { UserButton } from "@clerk/nextjs";
 
 const categories = [
   "Anime T-Shirts",
@@ -74,13 +75,20 @@ export function Navigation() {
                 >
                   Orders
                 </Link>
+                     <Link
+                  href="/custom-tshirt"
+                  className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
+                >
+                  Custom Tee
+                </Link>
                 <Link
                   href="/reviews"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
                 >
                   Reviews
                 </Link>
-                <DropdownMenu>
+               
+                {/* <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
@@ -106,7 +114,7 @@ export function Navigation() {
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
                 <Link
                   href="/contact"
                   className="text-foreground hover:text-primary transition-colors font-medium text-sm xl:text-base"
@@ -119,6 +127,8 @@ export function Navigation() {
             {/* Desktop Right Side Actions */}
             <div className="hidden md:flex items-center space-x-2 flex-shrink-0">
               {/* Wishlist */}
+
+               <Link href="/wishlist">
               <Button
                 variant="ghost"
                 size="icon"
@@ -131,6 +141,7 @@ export function Navigation() {
                   </Badge>
                 )}
               </Button>
+              </Link>
 
               {/* Cart */}
               <Button
@@ -148,7 +159,8 @@ export function Navigation() {
               </Button>
 
               {/* Profile */}
-              <DropdownMenu>
+              <UserButton />
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-10 w-10">
                     <User className="h-5 w-5" />
@@ -168,7 +180,7 @@ export function Navigation() {
                     <Link href="/signin">Sign In</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
             </div>
 
             {/* Mobile Right Side - Only Hamburger */}
@@ -221,27 +233,7 @@ export function Navigation() {
               </Button>
 
               {/* Profile */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-9 w-9">
-                    <User className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/profile">My Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/orders">My Orders</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/wishlist">Wishlist</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/signin">Sign In</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <UserButton />
 
               {/* Hamburger Menu */}
               <Button
@@ -280,15 +272,15 @@ export function Navigation() {
                     Order
                   </Link>
                   <Link
-                    href="/reviews/"
+                    href="/custom-tshirt"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Reviews
+                    Custom Tee
                   </Link>
 
                   {/* Mobile Categories */}
-                  <div className="py-2">
+                  {/* <div className="py-2">
                     <span className="text-muted-foreground font-medium text-sm px-2">
                       Categories
                     </span>
@@ -310,7 +302,7 @@ export function Navigation() {
                         </Link>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                   <Link
                     href="/reviews"
                     className="text-foreground hover:text-primary hover:bg-muted/50 transition-all font-medium py-3 px-2 rounded-md -mx-2"
@@ -376,12 +368,7 @@ export function Navigation() {
           </Button>
 
           {/* Profile */}
-          <Link
-            href="/profile"
-            className="flex flex-col items-center justify-center p-2 min-w-0"
-          >
-            <User className="h-6 w-6 text-muted-foreground" />
-          </Link>
+          <UserButton />
         </div>
       </div>
 

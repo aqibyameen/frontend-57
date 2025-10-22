@@ -4,7 +4,6 @@ import { Navigation } from "@/components/navigation"
 export default function CustomTshirtPage() {
   return (
     <>
-      <Navigation />
       <CustomTshirtDesigner />
     </>
   )
