@@ -2,7 +2,7 @@
 
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Work_Sans, Open_Sans } from "next/font/google";
+// import { Work_Sans, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import { CartProvider } from "@/lib/cart-store";
@@ -14,19 +14,19 @@ import { Toaster } from "sonner";
 import { AdminProvider } from "@/lib/AdminContext";
 import { ClerkProvider, SignedIn, SignIn } from "@clerk/nextjs";
 
-const workSans = Work_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-work-sans",
-  weight: ["400", "600", "700"],
-});
+// const workSans = Work_Sans({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-work-sans",
+//   weight: ["400", "600", "700"],
+// });
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-open-sans",
-  weight: ["400", "500", "600"],
-});
+// const openSans = Open_Sans({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-open-sans",
+//   weight: ["400", "500", "600"],
+// });
 
 export const metadata: Metadata = {
   title: "NXTGEN Wears Premium T-Shirt Store",
@@ -72,7 +72,7 @@ export default function RootLayout({
     >
     <html lang="en">
       <body
-        className={`font-sans antialiased ${workSans.variable} ${openSans.variable}`}
+        className={`font-sans antialiased `}
       >
         <CartProvider>
          <SignedIn>
