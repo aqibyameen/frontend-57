@@ -10,7 +10,7 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    optimizeCss: false,
+    optimizeCss: process.env.NODE_ENV !== "production",
   },
 }
 
