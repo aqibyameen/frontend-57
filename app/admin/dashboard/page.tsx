@@ -9,8 +9,22 @@ import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AddProductModal from "@/components/addProductModal";
 import { useAdmin } from "@/lib/AdminContext";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
 export default function AdminDashboard() {
+
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -18,6 +32,22 @@ export default function AdminDashboard() {
     await fetch("/api/admin/logout");
     router.push("/admin/login");
   };
+    const revenueData = [
+    { month: "Jan", revenue: 45000 },
+    { month: "Feb", revenue: 60000 },
+    { month: "Mar", revenue: 30000 },
+    { month: "Apr", revenue: 80000 },
+    { month: "May", revenue: 55000 },
+  ];
+
+  const productData = [
+    { name: "Anime Tees", value: 400 },
+    { name: "Gaming Tees", value: 300 },
+    { name: "Streetwear", value: 300 },
+    { name: "Customs", value: 200 },
+  ];
+
+  const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50"];
 
   const { orders, customers, products } = useAdmin();
 
@@ -90,7 +120,50 @@ export default function AdminDashboard() {
           </motion.div>
         ))}
       </div>
+  <div className="grid grid-cols-1 lg:grid-cols-2 mt-6 gap-8">
+        {/* Revenue Chart */}
+        <div className="bg-[#112240] p-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold mb-4 text-center">
+            Monthly Revenue
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={revenueData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#233554" />
+              <XAxis dataKey="month" stroke="#fff" />
+              <YAxis stroke="#fff" />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="revenue" fill="#8884d8" barSize={40} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
+        {/* Product Chart */}
+        <div className="bg-[#112240] p-6 rounded-xl shadow-lg">
+          <h3 className="text-xl font-semibold mb-4 text-center">
+            Product Category Distribution
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={productData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={100}
+                label
+              >
+                {productData.map((_, index) => (
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <AddProductModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       <AddProductModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
   );
